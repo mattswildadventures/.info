@@ -3,6 +3,7 @@ import { ReactNode, useContext, useRef } from "react";
 import { useFullscreen, useToggle } from "react-use";
 import { ThemeUICSSObject } from "theme-ui";
 import { fadeZoomIn } from "../../animations/fade";
+import { dockScaleIn, dockScaleInFallback } from "../../animations/dockScale";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import useMatchTheme from "../../hooks/useMatchTheme";
 import { sizes, ThemeMode } from "../../themes";
@@ -27,6 +28,10 @@ export default function Window({ title, children, help }: WindowProps) {
   const h = ["100%", null, null, `calc(100% - ${sizes[2] * 2}px)`];
 
   const Container = reduceMotion.val ? Box : MotionBox;
+  
+  // Check if we have a dock origin for the animation
+  const hasDockOrigin = typeof window !== 'undefined' && sessionStorage.getItem('windowOrigin');
+  const animation = hasDockOrigin ? dockScaleIn : dockScaleInFallback;
   
   // Move hook calls outside conditional usage
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
@@ -67,7 +72,7 @@ export default function Window({ title, children, help }: WindowProps) {
   };
 
   return (
-    <Container ref={ref} sx={style} {...fadeZoomIn}>
+    <Container ref={ref} sx={style} {...animation}>
       <WindowTitle onFullscreen={toggleFullscreen} help={help}>
         {isPresent && title}
       </WindowTitle>

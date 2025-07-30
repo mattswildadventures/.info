@@ -3,9 +3,8 @@ import { useRouter } from "next/router";
 import { Fragment, ReactNode } from "react";
 import { ThemeUICSSObject } from "theme-ui";
 import Navigation from "../molecules/Navigation";
-import SocialLinks from "../molecules/SocialLinks";
 import Desktop from "../organisms/Desktop";
-import Taskbar from "../organisms/Taskbar";
+import MacDock from "../organisms/MacDock";
 
 type LayoutProps = {
   children?: ReactNode;
@@ -23,12 +22,11 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
     <main sx={containerStyle}>
       <Desktop>
         <Navigation />
-        <SocialLinks />
         <AnimatePresence exitBeforeEnter>
           <Fragment key={useRouter().asPath}>{children}</Fragment>
         </AnimatePresence>
       </Desktop>
-      <Taskbar />
+      <MacDock />
     </main>
   );
 }
