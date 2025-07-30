@@ -22,6 +22,11 @@ export default function NavLink({ data }: NavLinkProps) {
   const defaultSize = isMobile && isLandscape ? 120 : 160;
   const sidebarSize = defaultSize / 2;
   const isActive = useRouter().asPath === data.path;
+  
+  // Move hook calls outside conditional usage
+  const isSoftTheme = useMatchTheme(ThemeMode.Soft);
+  const isClassicTheme = useMatchTheme(ThemeMode.Classic);
+  const isTronTheme = useMatchTheme(ThemeMode.Tron);
 
   const linkVariants: Variants = {
     main: {
@@ -80,21 +85,27 @@ export default function NavLink({ data }: NavLinkProps) {
     size: defaultSize,
     position: "relative",
 
-    ...(useMatchTheme(ThemeMode.Soft) && {
+    // Apply Mac-style 8px border radius to all dashboard tiles
+    borderRadius: "8px",
+
+    ...(isSoftTheme && {
       fontSize: isHomePage ? "2px" : "1px",
-      borderRadius: "10%",
-      boxShadow: (theme) => `inset 3em 3em 3em rgba(255, 255, 255, 0.5), 1em 1em 4em 3em ${theme.colors?.shadow}`,
+      boxShadow: (theme) => `0 2px 10px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2)`,
     }),
 
-    ...(useMatchTheme(ThemeMode.Classic) && {
+    ...(isClassicTheme && {
       fontSize: isHomePage ? "2px" : "1px",
-      borderRadius: "8%",
-      boxShadow: "inset 0 0 0 2em #000, 3em 3em 0 #000",
+      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.1)",
     }),
 
-    ...(useMatchTheme(ThemeMode.Tron) && {
+    ...(isTronTheme && {
       bg: "highlight",
-      boxShadow: (theme) => `inset 0 0 0 2px ${theme.colors?.shadow}`,
+      boxShadow: (theme) => `0 2px 10px rgba(40, 142, 159, 0.3), 0 0 0 1px ${theme.colors?.shadow}`,
+    }),
+
+    // Default theme (Flat) with Mac-style shadow
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && {
+      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)",
     }),
   };
 

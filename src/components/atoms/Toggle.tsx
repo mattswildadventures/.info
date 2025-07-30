@@ -18,6 +18,11 @@ type ToggleProps = {
 export default function Toggle({ id, label, isChecked, onChange, style }: ToggleProps) {
   const ref = useRef<HTMLInputElement>(null);
   const isFocused = useIsFocused(ref);
+  
+  // Move hook calls outside conditional usage
+  const isSoftTheme = useMatchTheme(ThemeMode.Soft);
+  const isClassicTheme = useMatchTheme(ThemeMode.Classic);
+  const isTronTheme = useMatchTheme(ThemeMode.Tron);
 
   const bgStyle: ThemeUICSSObject = {
     mr: 2,
@@ -26,24 +31,29 @@ export default function Toggle({ id, label, isChecked, onChange, style }: Toggle
     bg: alpha("secondary", 0.2),
     position: "relative",
     cursor: "pointer",
+    // Apply Mac-style 4px border radius for input-like elements
+    borderRadius: "4px",
 
-    ...(useMatchTheme(ThemeMode.Soft) && {
+    ...(isSoftTheme && {
       bg: "background",
       height: 20,
-      borderRadius: 10,
-      boxShadow: (theme) => `inset -1px -1px 1px #fff, inset 1px 1px 1px ${theme.colors?.shadow}`,
+      boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.1)",
     }),
 
-    ...(useMatchTheme(ThemeMode.Classic) && {
+    ...(isClassicTheme && {
       bg: "primary",
       height: 20,
-      border: "2px solid #000",
-      borderRadius: 10,
+      boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1)",
     }),
 
-    ...(useMatchTheme(ThemeMode.Tron) && {
+    ...(isTronTheme && {
       height: 20,
-      boxShadow: (theme) => `0 0 0 1.5px ${theme.colors?.shadow}`,
+      boxShadow: (theme) => `0 1px 3px rgba(40, 142, 159, 0.2), 0 0 0 1px ${theme.colors?.shadow}`,
+    }),
+
+    // Default theme (Flat) with Mac-style shadow
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && {
+      boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05)",
     }),
   };
 
@@ -52,9 +62,10 @@ export default function Toggle({ id, label, isChecked, onChange, style }: Toggle
     top: "-2px",
     width: "50%",
     height: "100%",
+    // Apply Mac-style 3px border radius for small toggle elements
+    borderRadius: "3px",
 
     ...(useMatchTheme(ThemeMode.Soft) && {
-      borderRadius: "50%",
       top: "10%",
       left: "10%",
       width: "40%",
@@ -62,7 +73,6 @@ export default function Toggle({ id, label, isChecked, onChange, style }: Toggle
     }),
 
     ...(useMatchTheme(ThemeMode.Classic) && {
-      borderRadius: "50%",
       top: "5%",
       left: "5%",
       width: "45%",
@@ -134,7 +144,7 @@ export default function Toggle({ id, label, isChecked, onChange, style }: Toggle
       />
       <span sx={bgStyle}>
         <motion.span sx={thumbStyle} variants={variants} animate={isChecked ? "on" : "off"} />
-        {isFocused && <span sx={{ ...focus, borderRadius: 2 }} />}
+        {isFocused && <span sx={{ ...focus, borderRadius: "4px" }} />}
       </span>
       <span sx={{ cursor: "pointer" }}>{label}</span>
     </label>

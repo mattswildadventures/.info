@@ -47,7 +47,7 @@ const Button = forwardRef((props: ButtonProps, ref: ButtonRef): JSX.Element => {
 
   const innerButtonStyle: ThemeUICSSObject = {
     ...focus,
-    borderRadius: 3,
+    borderRadius: "6px", // Mac-style 6px border radius for buttons
     ...focusStyle,
   };
 

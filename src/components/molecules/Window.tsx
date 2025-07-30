@@ -27,6 +27,11 @@ export default function Window({ title, children, help }: WindowProps) {
   const h = ["100%", null, null, `calc(100% - ${sizes[2] * 2}px)`];
 
   const Container = reduceMotion.val ? Box : MotionBox;
+  
+  // Move hook calls outside conditional usage
+  const isSoftTheme = useMatchTheme(ThemeMode.Soft);
+  const isClassicTheme = useMatchTheme(ThemeMode.Classic);
+  const isTronTheme = useMatchTheme(ThemeMode.Tron);
 
   const style: ThemeUICSSObject = {
     maxWidth: w,
@@ -38,20 +43,26 @@ export default function Window({ title, children, help }: WindowProps) {
     zIndex: zIndex.window,
     overflow: "hidden",
 
-    ...(useMatchTheme(ThemeMode.Soft) && {
+    // Apply Mac-style 12px border radius to all themes
+    borderRadius: "12px",
+
+    ...(isSoftTheme && {
       bg: "primary",
-      borderRadius: 20,
-      boxShadow: (theme) => `0 -1px 1px #fff, 4px 4px 6px 4px ${theme.colors?.shadow}`,
+      boxShadow: (theme) => `0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)`,
     }),
 
-    ...(useMatchTheme(ThemeMode.Classic) && {
+    ...(isClassicTheme && {
       bg: "background",
-      borderRadius: 20,
-      boxShadow: "0 0 0 3px #000, 6px 4px 0 2px #000",
+      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.1)",
     }),
 
-    ...(useMatchTheme(ThemeMode.Tron) && {
-      boxShadow: (theme) => `0 0 0 2px ${theme.colors?.shadow}`,
+    ...(isTronTheme && {
+      boxShadow: (theme) => `0 4px 20px rgba(40, 142, 159, 0.3), 0 0 0 1px ${theme.colors?.shadow}`,
+    }),
+
+    // Default theme (Flat)
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && {
+      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)",
     }),
   };
 

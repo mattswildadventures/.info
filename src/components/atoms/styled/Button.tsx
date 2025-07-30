@@ -25,24 +25,26 @@ export default function StyledButton({ iconName, children, ...props }: StyledBut
 
     "& > span": { display: "flex" },
 
+    // Apply Mac-style 6px border radius to all button themes
+    borderRadius: "6px",
+
     ...(useMatchTheme(ThemeMode.Flat) && {
       borderBottom: "4px solid",
       borderBottomColor: alpha("primary", 0.1),
+      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
     }),
 
     ...(useMatchTheme(ThemeMode.Soft) && {
-      borderRadius: 6,
-      boxShadow: (theme) => `inset 2px 2px 2px #fff, 2px 2px 2px ${theme.colors?.shadow}`,
+      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
     }),
 
     ...(useMatchTheme(ThemeMode.Classic) && {
-      borderRadius: 6,
-      boxShadow: "0 0 0 2px #000",
+      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1)",
       "&:hover, &:focus": { bg: "primary", color: "text" },
     }),
 
     ...(useMatchTheme(ThemeMode.Tron) && {
-      boxShadow: (theme) => `0 0 0 1px ${theme.colors?.shadow}`,
+      boxShadow: (theme) => `0 2px 8px rgba(40, 142, 159, 0.2), 0 0 0 1px ${theme.colors?.shadow}`,
       color: "textReverse",
       "&:hover, &:focus": { bg: "green", color: "text" },
     }),

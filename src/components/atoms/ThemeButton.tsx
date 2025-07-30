@@ -26,10 +26,16 @@ export default function ThemeButton({ theme }: ThemeButtonProps) {
     left: 0,
     bottom: 0,
     right: 0,
+    borderRadius: "6px", // Mac-style 6px border radius for button elements
   };
 
   return (
-    <MotionButton unsetStyle whileHover={{ scale: isActive ? 1 : 0.95 }} onClick={() => cachedTheme.set(theme)}>
+    <MotionButton 
+      unsetStyle 
+      whileHover={{ scale: isActive ? 1 : 0.95 }} 
+      onClick={() => cachedTheme.set(theme)}
+      sx={{ borderRadius: "6px", overflow: "hidden", position: "relative" }}
+    >
       <Image src={`/images/theme-${theme}.png`} alt={`Theme ${theme}`} layout="fixed" width={140} height={84} />
       {isActive && (
         <motion.span sx={maskStyle} animate={{ opacity: 1 }} initial={{ opacity: 0 }} transition={{ duration: 0.2 }}>

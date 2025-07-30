@@ -18,6 +18,11 @@ type PanelConfigProps = {
 
 const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElement>) => {
   const { reduceMotion, hideTaskbar } = useContext(GlobalContext);
+  
+  // Move hook calls outside conditional usage
+  const isSoftTheme = useMatchTheme(ThemeMode.Soft);
+  const isClassicTheme = useMatchTheme(ThemeMode.Classic);
+  const isTronTheme = useMatchTheme(ThemeMode.Tron);
 
   const panelConfigStyle: ThemeUICSSObject = {
     p: 4,
@@ -28,20 +33,26 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
     bottom: useTaskbarHeight() + sizes[2],
     zIndex: zIndex.taskbar,
 
-    ...(useMatchTheme(ThemeMode.Soft) && {
+    // Apply Mac-style 8px border radius to all panel themes
+    borderRadius: "8px",
+
+    ...(isSoftTheme && {
       bg: lighten("primary", 0.02),
-      borderRadius: "5%",
-      boxShadow: (theme) => `inset 2px 2px 4px rgba(255, 255, 255, 0.8), 1px 1px 4px ${theme.colors?.shadow}`,
+      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
     }),
 
-    ...(useMatchTheme(ThemeMode.Classic) && {
+    ...(isClassicTheme && {
       bg: "background",
-      borderRadius: "6%",
-      boxShadow: "inset 0 0 0 3px #000, 4px 4px 0 #000",
+      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.1)",
     }),
 
-    ...(useMatchTheme(ThemeMode.Tron) && {
-      boxShadow: "inset 0 0 0 2px var(--theme-ui-colors-shadow)",
+    ...(isTronTheme && {
+      boxShadow: "0 4px 20px rgba(40, 142, 159, 0.3), 0 0 0 1px var(--theme-ui-colors-shadow)",
+    }),
+
+    // Default theme (Flat) with Mac-style shadow
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && {
+      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)",
     }),
   };
 
