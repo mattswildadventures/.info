@@ -56,15 +56,29 @@ export default function MacDock() {
   const dockStyle: ThemeUICSSObject = {
     position: "fixed",
     bottom: "16px",
-    left: "50%",
-    transform: "translateX(-50%) translate3d(0, 0, 0)", // Combine transforms
+    left: "0",
+    right: "0",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "end",
+    pointerEvents: "none", // Allow clicks to pass through the container
+    zIndex: zIndex.taskbar,
+    
+    // Mobile responsive adjustment for bottom spacing
+    ...(isMobile && {
+      bottom: "12px",
+    }),
+  };
+
+  const dockInnerStyle: ThemeUICSSObject = {
     display: "flex",
     alignItems: "end",
     gap: "4px",
+    pointerEvents: "auto", // Re-enable pointer events for the actual dock
     padding: "8px",
     borderRadius: "20px",
-    zIndex: zIndex.taskbar,
     willChange: "transform",
+    transform: "translate3d(0, 0, 0)", // Hardware acceleration
     
     // Base glassmorphism styling
     background: "rgba(255, 255, 255, 0.15)",
@@ -93,7 +107,6 @@ export default function MacDock() {
 
     // Enhanced responsive adjustments
     ...(isMobile && {
-      bottom: "12px",
       padding: "6px",
       borderRadius: "16px",
       gap: "2px",
@@ -130,10 +143,23 @@ export default function MacDock() {
     onClick();
   };
 
+  // Custom home icon
+  const HomeIcon = () => (
+    <svg 
+      width="24" 
+      height="24" 
+      viewBox="0 0 24 24" 
+      fill="currentColor"
+      sx={{ opacity: 0.8 }}
+    >
+      <path d="M12 2.1L1 12h3v9h6v-6h4v6h6v-9h3L12 2.1zM12 4.7L18 10.1V19h-2v-6H8v6H6v-8.9L12 4.7z"/>
+    </svg>
+  );
+
   // Dock icons configuration
   const dockIcons = [
     {
-      iconName: "FlatAbout" as const,
+      customIcon: <HomeIcon />,
       label: "Home",
       onClick: () => router.push("/"),
       isActive: isHomePage,
@@ -216,34 +242,36 @@ export default function MacDock() {
 
   return (
     <>
-      <motion.div
-        ref={dockRef}
-        sx={dockStyle}
-        onMouseLeave={handleMouseLeave}
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
-        {dockIcons.map((icon, index) => (
-          <DockIcon
-            key={`${icon.label}-${index}`}
-            iconName={icon.iconName}
-            customIcon={icon.customIcon}
-            label={icon.label}
-            onClick={icon.isNavigationIcon && icon.onClick ? 
-              (e) => handleIconClick(icon.onClick!, e) : 
-              icon.onClick
-            }
-            href={icon.href}
-            isActive={icon.isActive}
-            index={index}
-            onMouseEnter={handleIconHover}
-            onMouseLeave={handleMouseLeave}
-            scale={getMagnification(index)}
-            isNavigationIcon={icon.isNavigationIcon}
-          />
-        ))}
-      </motion.div>
+      <div sx={dockStyle}>
+        <motion.div
+          ref={dockRef}
+          sx={dockInnerStyle}
+          onMouseLeave={handleMouseLeave}
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          {dockIcons.map((icon, index) => (
+            <DockIcon
+              key={`${icon.label}-${index}`}
+              iconName={icon.iconName}
+              customIcon={icon.customIcon}
+              label={icon.label}
+              onClick={icon.isNavigationIcon && icon.onClick ? 
+                (e) => handleIconClick(icon.onClick!, e) : 
+                icon.onClick
+              }
+              href={icon.href}
+              isActive={icon.isActive}
+              index={index}
+              onMouseEnter={handleIconHover}
+              onMouseLeave={handleMouseLeave}
+              scale={getMagnification(index)}
+              isNavigationIcon={icon.isNavigationIcon}
+            />
+          ))}
+        </motion.div>
+      </div>
       
       <PanelConfig isVisible={isConfigActive} ref={panelRef} />
     </>
