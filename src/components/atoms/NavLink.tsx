@@ -36,13 +36,6 @@ export default function NavLink({ data }: NavLinkProps) {
       margin: sizes[isMobile && isLandscape ? 2 : 3],
       transition: useReduceMotion({ duration: 0.6, delay: 0.3 }),
     },
-    sidebar: {
-      width: sidebarSize,
-      height: sidebarSize,
-      opacity: 1,
-      margin: sizes[2],
-      transition: useReduceMotion(),
-    },
   };
 
   const iconVariants: Variants = {
@@ -50,11 +43,6 @@ export default function NavLink({ data }: NavLinkProps) {
       width: sidebarSize,
       height: sidebarSize,
       transition: useReduceMotion({ duration: 1 }),
-    },
-    sidebar: {
-      width: sidebarSize / 2,
-      height: sidebarSize / 2,
-      transition: useReduceMotion(),
     },
   };
 
@@ -64,12 +52,6 @@ export default function NavLink({ data }: NavLinkProps) {
       opacity: 1,
       marginTop: sizes[3],
       transition: useReduceMotion({ duration: 1 }),
-    },
-    sidebar: {
-      height: 0,
-      opacity: 0,
-      margin: 0,
-      transition: useReduceMotion(),
     },
   };
 
@@ -135,22 +117,22 @@ export default function NavLink({ data }: NavLinkProps) {
         href={data.path}
         sx={linkStyle}
         variants={linkVariants}
-        animate={isHomePage ? "main" : "sidebar"}
-        initial={isHomePage || "sidebar"}
-        whileHover={isHomePage ? { scale: 0.95 } : undefined}
+        animate="main"
+        initial="main"
+        whileHover={{ scale: 0.95 }}
       >
         {isActive && <motion.span layoutId="indicator" sx={indicatorStyle} transition={spring} />}
         <MotionIcon
           variants={iconVariants}
-          animate={isHomePage ? "main" : "sidebar"}
+          animate="main"
           initial="main"
           iconName={data.icon}
           tag="span"
         />
         <motion.span
           variants={labelVariants}
-          animate={isHomePage ? "main" : "sidebar"}
-          initial={isHomePage ? "main" : "sidebar"}
+          animate="main"
+          initial="main"
           sx={{ whiteSpace: "nowrap", overflow: "hidden", fontSize: isMobile && isLandscape ? 16 : 20 }}
         >
           {data.title}

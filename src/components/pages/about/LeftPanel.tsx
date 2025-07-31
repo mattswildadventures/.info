@@ -4,7 +4,7 @@ import StyledButton from "../../atoms/styled/Button";
 
 export default function LeftPanel() {
   const avatarSize = 220;
-  const avatarUrl = `https://gravatar.com/avatar/7a054fbf58c9fe4f7dadb07091fe4cff?s=${avatarSize}`;
+  const avatarUrl = `/mwa_about.jpg`;
 
   const buttonStyle: ThemeUICSSObject = {
     mt: 3,

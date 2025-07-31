@@ -27,6 +27,7 @@ export default function MacDock() {
   
   const route = getRoute(router.asPath);
   const isHomePage = router.asPath === "/";
+  
 
   // Move hook calls outside conditional usage
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);

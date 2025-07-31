@@ -11,26 +11,20 @@ import NavLink from "../atoms/NavLink";
 export default function Navigation() {
   const isHomePage = useHomepage();
   const isMobile = useInBreakpoint(0);
+  const mainTransition = useReduceMotion({ duration: 0.8 });
+  
+  // Only show navigation on homepage - left sidebar navigation removed
+  if (!isHomePage) {
+    return null;
+  }
 
   const motionVariants: Variants = {
     main: {
       ...translate("-50%"),
       top: "50%",
       left: "50%",
-      display: isMobile && !isHomePage ? "none" : "grid",
-      transition: useReduceMotion({ duration: 0.8 }),
-    },
-    sidebarInit: {
-      ...translate(0),
-      top: 0,
-      left: "-10%",
-    },
-    sidebar: {
-      ...translate(0),
-      top: 0,
-      left: 0,
-      display: "block",
-      transition: useReduceMotion({ duration: 0.8, type: "spring" }),
+      display: isMobile ? "none" : "grid",
+      transition: mainTransition,
     },
   };
 
@@ -44,8 +38,8 @@ export default function Navigation() {
     <MotionNav
       sx={containerStyle}
       variants={motionVariants}
-      animate={isHomePage || isMobile ? "main" : "sidebar"}
-      initial={isHomePage ? "main" : "sidebarInit"}
+      animate="main"
+      initial="main"
     >
       {routes.map((route) => (
         <NavLink key={route.path} data={route} />

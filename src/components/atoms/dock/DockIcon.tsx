@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { MouseEventHandler, ReactNode, useRef } from "react";
 import { ThemeUICSSObject } from "theme-ui";
 import useInBreakpoint from "../../../hooks/useInBreakpoint";
+import useMatchTheme from "../../../hooks/useMatchTheme";
+import { ThemeMode } from "../../../themes";
 import { MotionButton } from "../Button";
 import Icon, { IconName } from "../Icon";
 
@@ -92,15 +94,29 @@ export default function DockIcon({
 
   const dotIndicatorStyle: ThemeUICSSObject = {
     position: "absolute",
-    bottom: -8,
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: 4,
-    height: 4,
+    top: "-2px",
+    right: "-2px",
+    width: "9px",
+    height: "9px",
+    minWidth: "9px", // Prevent theme scaling
+    minHeight: "9px", // Prevent theme scaling
+    maxWidth: "9px", // Prevent theme scaling
+    maxHeight: "9px", // Prevent theme scaling
     borderRadius: "50%",
-    background: "rgba(255, 255, 255, 0.8)",
-    opacity: isActive ? 1 : 0,
+    bg: "highlight", // Use theme highlight color like NavLink
+    opacity: isActive && isNavigationIcon ? 1 : 0, // Only show for navigation icons when active
     transition: "opacity 0.2s ease-out",
+    zIndex: 10, // Ensure it's above other elements
+    
+    // Theme-specific styling to match NavLink
+    ...(useMatchTheme(ThemeMode.Classic) && {
+      boxShadow: "0 0 0 1px #000",
+    }),
+
+    ...(useMatchTheme(ThemeMode.Tron) && {
+      bg: "red",
+      boxShadow: (theme) => `0 0 0 1px ${theme.colors?.shadow}`,
+    }),
   };
 
   const bounceVariants = {
@@ -157,7 +173,7 @@ export default function DockIcon({
       </MotionButton>
       
       {/* Active indicator dot */}
-      <div sx={dotIndicatorStyle} />
+      {isNavigationIcon && <div sx={dotIndicatorStyle} />}
       
       {/* CSS keyframes for bounce animation */}
       <style jsx>{`

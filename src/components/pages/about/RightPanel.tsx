@@ -29,7 +29,7 @@ export default function RightPanel() {
   return (
     <div sx={containerStyle}>
       <H2 style={alignment}>
-        Hello, I&apos;m <span sx={{ color: "red", fontWeight: "bold" }}>Khang</span>
+        Hello, I&apos;m <span sx={{ color: "red", fontWeight: "bold" }}>Matt</span>
       </H2>
       <SubTitle style={alignment}>{about.headline}</SubTitle>
       <p sx={{ mb: 5 }}>{about.intro}</p>

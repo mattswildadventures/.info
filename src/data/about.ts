@@ -1,22 +1,19 @@
 const about = {
-  headline: "A software developer, front-end enthusiast.",
-  intro: `I'm a full-time software developer who has a strong passion for visual
-  and design. I enjoy developing visual-related stuffs, reading random
-  tech blogs and getting inspired by the awesomeness.`,
+  headline: "An Adventurer, Fitness, Mindset, Business, Tech Guy.",
+  intro: `I'm a lover of challenges, learning new things, various forms of creativity, and hanging out with my mates.
+  This shows up in the different activities I do such as training for endurance events, hiking, problem-solving, research on Mindset Construction and building & growing businesses.`,
   facts: [
-    "My full name is Khang Nguyen Duy, but I prefer just $1.",
-    "I was born on a wonderful day in 1995.",
-    "I am a citizen of Vietnam, living in its largest city.",
-    "One word to describe my personality: Introversion.",
-    "Two words to describe my capability: Good all-rounder.",
-    "Three words to describe my living goal: Family and friends.",
+    "I’m based in Australia and currently working out of way too many tabs.",
+    "My background’s in business & tech, but I care just as much about mindset, language, and systems.",
+    "One word for how I work: Iterative.",
+    "Two words for what I build: Practical Solutions.",
+    "Three words I challenge myself with: Do. Hard. Shit.",
   ],
   trivias: [
-    "Basketball is my favorite sport.",
-    "I love winter, but only on screen. I can hardly handle the cold in actuality.",
-    "I served the country in a local militia for 2 years.",
-    `There is this video game franchise that has a major impact on my life called
-    Fire Emblem. And I have been serving its $2 as an admin for several years.`,
+    "I race competitively in Obstacle Course Racing, think Spartan/Tough Mudder.",
+    "I've represented Australia in Obstacle Sports",
+    "I backpacked throughout Europe & UK for 5 months, visiting 23 Countries.",
+    `I'm writing a research paper/book on our Mindset Architecture & Construction`,
   ],
   links: {
     $1: ["Khang", "https://www.howtopronounce.com/khang"],
