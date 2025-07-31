@@ -1,0 +1,98 @@
+// Content Management System Schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Content Types (About, Work, Skills, Mindset, Sports/Events)
+model ContentType {
+  id               String   @id @default(uuid())
+  name             String   @unique
+  slug             String   @unique
+  icon             String?
+  schema           Json     // Field definitions and validation rules
+  layoutComponent  String   // React component name for rendering
+  adminFormConfig  Json?    // Admin UI configuration
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  // Relations
+  contentItems     ContentItem[]
+  navigationItems  NavigationItem[]
+  
+  @@map("content_types")
+}
+
+// Content Items with Public/Private Control
+model ContentItem {
+  id              String      @id @default(uuid())
+  contentTypeId   String
+  slug            String      @unique
+  title           String
+  data            Json        // Flexible content storage (JSONB)
+  isPublic        Boolean     @default(false) // KEY: Show on main page
+  isPublished     Boolean     @default(false) // Draft vs published
+  metaTitle       String?     // SEO
+  metaDescription String?     // SEO
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  publishedAt     DateTime?
+  
+  // Relations
+  contentType     ContentType @relation(fields: [contentTypeId], references: [id], onDelete: Cascade)
+  navigationItems NavigationItem[]
+  
+  @@map("content_items")
+}
+
+// Navigation Items (Dock/Menu)
+model NavigationItem {
+  id              String       @id @default(uuid())
+  label           String
+  slug            String       @unique
+  icon            String?
+  order           Int          @default(0)
+  isVisible       Boolean      @default(true) // Show in dock/menu
+  contentItemId   String?      // Optional link to content
+  contentTypeId   String?      // Optional link to content type
+  externalUrl     String?      // For external links
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  // Relations
+  contentItem     ContentItem? @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+  contentType     ContentType? @relation(fields: [contentTypeId], references: [id], onDelete: Cascade)
+  
+  @@map("navigation_items")
+}
+
+// Social Links (from existing system)
+model SocialLink {
+  id        String   @id @default(uuid())
+  platform  String
+  url       String
+  icon      String
+  label     String
+  order     Int      @default(0)
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("social_links")
+}
+
+// Admin Settings
+model AdminSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("admin_settings")
+}

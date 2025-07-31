@@ -1,0 +1,138 @@
+{
+  "about": {
+    "title": "About Me",
+    "content": "I'm a passionate developer with expertise in modern web technologies. I love creating beautiful, functional applications that solve real-world problems.",
+    "image": null,
+    "skills": [
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Node.js"
+    ]
+  },
+  "work": {
+    "title": "My Work",
+    "description": "Here are some of the projects I've worked on:",
+    "projects": [
+      {
+        "id": "1",
+        "title": "Portfolio Website",
+        "description": "A modern portfolio website built with Next.js and Framer Motion",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "Framer Motion",
+          "Theme UI"
+        ],
+        "image": null,
+        "url": null,
+        "github": null
+      }
+    ]
+  },
+  "skills": {
+    "title": "Skills",
+    "description": "Technologies and tools I work with:",
+    "categories": [
+      {
+        "name": "Frontend",
+        "skills": [
+          {
+            "name": "React",
+            "level": "Advanced",
+            "icon": "skill-reactjs"
+          },
+          {
+            "name": "TypeScript",
+            "level": "Advanced",
+            "icon": "skill-ts"
+          },
+          {
+            "name": "Next.js",
+            "level": "Advanced",
+            "icon": "skill-nextjs"
+          },
+          {
+            "name": "JavaScript",
+            "level": "Expert",
+            "icon": "skill-js"
+          }
+        ]
+      },
+      {
+        "name": "Backend",
+        "skills": [
+          {
+            "name": "Node.js",
+            "level": "Advanced",
+            "icon": "skill-nodejs"
+          },
+          {
+            "name": "GraphQL",
+            "level": "Intermediate",
+            "icon": "skill-gql"
+          }
+        ]
+      },
+      {
+        "name": "Tools",
+        "skills": [
+          {
+            "name": "Git",
+            "level": "Advanced",
+            "icon": "skill-git"
+          },
+          {
+            "name": "VS Code",
+            "level": "Expert",
+            "icon": "skill-vscode"
+          },
+          {
+            "name": "Figma",
+            "level": "Intermediate",
+            "icon": "skill-figma"
+          }
+        ]
+      }
+    ]
+  },
+  "socialLinks": [
+    {
+      "id": "github",
+      "platform": "GitHub",
+      "url": "https://github.com/mattswildadventures",
+      "icon": "SiGithub",
+      "label": "GitHub",
+      "order": 1
+    },
+    {
+      "id": "linkedin",
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/in/khangnd",
+      "icon": "FaLinkedinIn",
+      "label": "LinkedIn",
+      "order": 2
+    },
+    {
+      "id": "twitter",
+      "platform": "Twitter",
+      "url": "https://twitter.com/_khangnd",
+      "icon": "SiTwitter",
+      "label": "Twitter",
+      "order": 3
+    },
+    {
+      "id": "fandom",
+      "platform": "Fandom",
+      "url": "https://dev.fandom.com/wiki/User:KhangND",
+      "icon": "SiFandom",
+      "label": "Fandom",
+      "order": 4
+    }
+  ],
+  "settings": {
+    "adminPassword": "admin123",
+    "lastUpdated": "2025-07-30T22:27:58.161Z"
+  }
+}

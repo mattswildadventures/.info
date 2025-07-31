@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { useClickAway, useKey } from "react-use";
 import { ThemeUICSSObject } from "theme-ui";
 import { GlobalContext } from "../../contexts/GlobalContext";
@@ -20,6 +20,7 @@ export default function MacDock() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [configPanel, setConfigPanel] = useState(false);
   const [clickOrigin, setClickOrigin] = useState<{ x: number; y: number } | null>(null);
+  const [socialLinks, setSocialLinks] = useState<any[]>([]);
   const isMobile = useInBreakpoint(0);
   
   const panelRef = useRef<HTMLElement>(null);
@@ -27,6 +28,25 @@ export default function MacDock() {
   
   const route = getRoute(router.asPath);
   const isHomePage = router.asPath === "/";
+
+  // Load social links from content data
+  useEffect(() => {
+    const loadSocialLinks = async () => {
+      try {
+        const response = await fetch('/api/content');
+        if (response.ok) {
+          const data = await response.json();
+          setSocialLinks(data.socialLinks?.sort((a: any, b: any) => a.order - b.order) || []);
+        }
+      } catch (error) {
+        console.error('Failed to load social links:', error);
+        // Fallback to empty array
+        setSocialLinks([]);
+      }
+    };
+
+    loadSocialLinks();
+  }, []);
 
   // Move hook calls outside conditional usage
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
@@ -156,8 +176,9 @@ export default function MacDock() {
     </svg>
   );
 
-  // Dock icons configuration
+  // Create dock icons configuration with dynamic social links
   const dockIcons = [
+    // Navigation icons
     {
       customIcon: <HomeIcon />,
       label: "Home",
@@ -174,7 +195,7 @@ export default function MacDock() {
     },
     {
       iconName: "FlatWork" as const,
-      label: "My Work",
+      label: "My Work", 
       onClick: () => router.push("/work"),
       isActive: router.asPath === "/work",
       isNavigationIcon: true,
@@ -193,7 +214,7 @@ export default function MacDock() {
       isActive: router.asPath === "/blog",
       isNavigationIcon: true,
     },
-    // Divider (visual separator)
+    // Separator
     {
       customIcon: <div sx={{ width: "2px", height: "32px", background: "rgba(255,255,255,0.3)", borderRadius: "1px" }} />,
       label: "Separator",
@@ -201,36 +222,15 @@ export default function MacDock() {
       isActive: false,
       isNavigationIcon: false,
     },
-    // Social Media Icons
-    {
-      customIcon: <ReactIcon iconName="SiGithub" size={28} />,
-      label: "GitHub",
-      href: "https://github.com/khang-nd",
+    // Dynamic social media icons
+    ...socialLinks.map((link) => ({
+      customIcon: <ReactIcon iconName={link.icon as any} size={28} />,
+      label: link.label,
+      href: link.url,
       isActive: false,
       isNavigationIcon: false,
-    },
-    {
-      customIcon: <ReactIcon iconName="FaLinkedinIn" size={28} />,
-      label: "LinkedIn", 
-      href: "https://www.linkedin.com/in/khangnd",
-      isActive: false,
-      isNavigationIcon: false,
-    },
-    {
-      customIcon: <ReactIcon iconName="SiTwitter" size={28} />,
-      label: "Twitter",
-      href: "https://twitter.com/_khangnd", 
-      isActive: false,
-      isNavigationIcon: false,
-    },
-    {
-      customIcon: <ReactIcon iconName="SiFandom" size={28} />,
-      label: "Fandom",
-      href: "https://dev.fandom.com/wiki/User:KhangND",
-      isActive: false,
-      isNavigationIcon: false,
-    },
-    // Settings
+    })),
+    // Settings icon
     {
       iconName: "FlatSettings" as const,
       label: "Settings",
@@ -254,14 +254,14 @@ export default function MacDock() {
           {dockIcons.map((icon, index) => (
             <DockIcon
               key={`${icon.label}-${index}`}
-              iconName={icon.iconName}
-              customIcon={icon.customIcon}
+              iconName={'iconName' in icon ? icon.iconName : undefined}
+              customIcon={'customIcon' in icon ? icon.customIcon : undefined}
               label={icon.label}
-              onClick={icon.isNavigationIcon && icon.onClick ? 
+              onClick={'onClick' in icon && icon.isNavigationIcon && icon.onClick ? 
                 (e) => handleIconClick(icon.onClick!, e) : 
-                icon.onClick
+                ('onClick' in icon ? icon.onClick : undefined)
               }
-              href={icon.href}
+              href={'href' in icon ? icon.href : undefined}
               isActive={icon.isActive}
               index={index}
               onMouseEnter={handleIconHover}
