@@ -1,3 +1,24 @@
+/*
+ * BLOG FUNCTIONALITY DEACTIVATED - 2025-01-31
+ * 
+ * This file has been deactivated in favor of the new Research Paper functionality.
+ * The blog page was replaced with a local research paper system that doesn't rely on external APIs.
+ * 
+ * To reactivate blog functionality:
+ * 1. Uncomment all code in this file
+ * 2. Restore the blog route in src/misc/routes.ts
+ * 3. Update the MacDock component to use /blog instead of /research-paper
+ * 4. Ensure Dev.to and Viblo API integrations are working
+ * 
+ * Original blog functionality included:
+ * - Integration with Dev.to API for fetching articles
+ * - Integration with Viblo API for Vietnamese articles
+ * - Static generation with revalidation every 7 days
+ * - Platform switching between Dev.to and Viblo
+ * - External link navigation to published articles
+ */
+
+/*
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -49,3 +70,9 @@ export default function Blog({ devtoArticles, vibloArticles, lastUpdated }: Page
 }
 
 Blog.getLayout = (page: JSX.Element) => <Layout>{page}</Layout>;
+*/
+
+// Temporary redirect to prevent 404 errors during transition
+export default function Blog() {
+  return null;
+}

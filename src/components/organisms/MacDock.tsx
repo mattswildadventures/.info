@@ -189,9 +189,9 @@ export default function MacDock() {
     },
     {
       iconName: "FlatEdu" as const,
-      label: "Blog",
-      onClick: () => router.push("/blog"),
-      isActive: router.asPath === "/blog",
+      label: "Research Paper",
+      onClick: () => router.push("/research-paper"),
+      isActive: router.asPath === "/research-paper",
       isNavigationIcon: true,
     },
     // Divider (visual separator)

@@ -94,8 +94,8 @@ export default function DockIcon({
 
   const dotIndicatorStyle: ThemeUICSSObject = {
     position: "absolute",
-    top: "-2px",
-    right: "-2px",
+    top: "4px",
+    right: "4px",
     width: "9px",
     height: "9px",
     minWidth: "9px", // Prevent theme scaling
