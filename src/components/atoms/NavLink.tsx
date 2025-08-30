@@ -8,6 +8,7 @@ import useInBreakpoint from "../../hooks/useInBreakpoint";
 import useIsLandscape from "../../hooks/useIsLandscape";
 import useMatchTheme from "../../hooks/useMatchTheme";
 import useReduceMotion from "../../hooks/useReduceMotion";
+import useDimensions from "../../hooks/useDimentions";
 import { Route } from "../../misc/routes";
 import { sizes, ThemeMode } from "../../themes";
 import { MotionIcon } from "./Icon";
@@ -20,13 +21,28 @@ export default function NavLink({ data }: NavLinkProps) {
   const isHomePage = useHomepage();
   const isLandscape = useIsLandscape();
   const isMobile = useInBreakpoint(0, isLandscape);
-  const isMobilePortrait = useInBreakpoint(1); // Use same breakpoint as taskbar
+  const { width: screenWidth } = useDimensions();
+  
+  // Smart layout detection - same logic as Navigation component
+  const getOptimalLayout = () => {
+    const tileSize = 150;
+    const gapSize = 16;
+    const padding = 40;
+    const widthFor3x2 = (tileSize * 3) + (gapSize * 2) + padding;
+    const safetyMargin = 20;
+    const minWidthFor3x2 = widthFor3x2 + safetyMargin;
+    
+    return screenWidth >= minWidthFor3x2 ? '3x2' : '2x3';
+  };
+
+  const layout = getOptimalLayout();
+  const isNarrowLayout = layout === '2x3';
   
   // Responsive sizing for tiles with adequate touch targets
   const defaultSize = (() => {
-    if (isMobilePortrait) return 150; // Mobile portrait: good touch target size
-    if (isMobile && isLandscape) return 130; // Mobile landscape: still adequate
-    return 160; // Desktop: original size
+    if (isNarrowLayout) return 150; // Narrow layout: consistent 150px tiles
+    if (isMobile && isLandscape) return 130; // Mobile landscape: smaller
+    return 160; // Desktop wide: original size
   })();
   
   const sidebarSize = defaultSize / 2;
@@ -44,8 +60,8 @@ export default function NavLink({ data }: NavLinkProps) {
       width: defaultSize,
       height: defaultSize,
       opacity: 1,
-      // Use margin only for desktop, mobile uses grid gap
-      margin: isMobilePortrait ? 0 : sizes[isMobile && isLandscape ? 2 : 3],
+      // Use margin only for desktop wide layout, narrow layout uses grid gap
+      margin: isNarrowLayout ? 0 : sizes[isMobile && isLandscape ? 2 : 3],
       transition: useReduceMotion({ duration: 0.6, delay: 0.3 }),
     },
   };
@@ -171,7 +187,7 @@ export default function NavLink({ data }: NavLinkProps) {
           sx={{ 
             whiteSpace: "nowrap", 
             overflow: "hidden", 
-            fontSize: isMobilePortrait ? 14 : (isMobile && isLandscape ? 16 : 20),
+            fontSize: isNarrowLayout ? 14 : (isMobile && isLandscape ? 16 : 20),
             textAlign: "center"
           }}
         >
