@@ -26,7 +26,7 @@ const getTransformOrigin = () => {
 export const dockScaleIn: Variants = {
   initial: {
     opacity: 0,
-    scale: 0.1,
+    scale: 0.9,
     transition: { 
       type: "spring", 
       stiffness: 300, 
@@ -44,7 +44,7 @@ export const dockScaleIn: Variants = {
   },
   exit: {
     opacity: 0,
-    scale: 0.1,
+    scale: 0.9,
     transition: { 
       type: "spring", 
       stiffness: 400, 

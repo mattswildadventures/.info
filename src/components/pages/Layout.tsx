@@ -1,8 +1,9 @@
 import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
-import { Fragment, ReactNode, useContext } from "react";
+import { Fragment, ReactNode, useContext, useEffect } from "react";
 import { ThemeUICSSObject } from "theme-ui";
 import { GlobalContext, BackgroundMode } from "../../contexts/GlobalContext";
+import { useUnsplashBackground } from "../../hooks/useUnsplashBackground";
 import Navigation from "../molecules/Navigation";
 import Desktop from "../organisms/Desktop";
 import MacDock from "../organisms/MacDock";
@@ -13,6 +14,16 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps): JSX.Element {
   const { background } = useContext(GlobalContext);
+  const { imageUrl, attribution, loading, error, fetchRandomBackground, clearBackground } = useUnsplashBackground();
+
+  // Fetch random background when Random mode is selected
+  useEffect(() => {
+    if (background.val === BackgroundMode.Random) {
+      fetchRandomBackground();
+    } else {
+      clearBackground();
+    }
+  }, [background.val, fetchRandomBackground, clearBackground]);
 
   const getBackgroundStyle = (): ThemeUICSSObject => {
     switch (background.val) {
@@ -24,12 +35,15 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
           backgroundRepeat: "no-repeat",
         };
       case BackgroundMode.Random:
-        return {
-          backgroundImage: "url('https://source.unsplash.com/random/1920x1080/?mountains,nature,backpacking,wilderness')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        };
+        if (imageUrl) {
+          return {
+            backgroundImage: `url('${imageUrl}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          };
+        }
+        return { background: "secondary" };
       default:
         return {
           background: "secondary",
@@ -53,6 +67,43 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
         </AnimatePresence>
       </Desktop>
       <MacDock />
+      
+      {/* Unsplash attribution as required by their API terms */}
+      {attribution && background.val === BackgroundMode.Random && process.env.NEXT_PUBLIC_SHOW_PHOTOGRAPHER_CREDIT === 'true' && (
+        <div
+          sx={{
+            position: "fixed",
+            bottom: "80px",
+            right: "16px",
+            padding: "8px 12px",
+            background: "rgba(0, 0, 0, 0.7)",
+            color: "white",
+            borderRadius: "4px",
+            fontSize: "12px",
+            zIndex: 1000,
+            opacity: 0.8,
+            transition: "opacity 0.3s ease",
+            "&:hover": {
+              opacity: 1,
+            },
+          }}
+        >
+          <a
+            href={attribution.photographerUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              color: "white",
+              textDecoration: "none",
+              "&:hover": {
+                textDecoration: "underline",
+              },
+            }}
+          >
+            Photo by {attribution.photographerName} on Unsplash
+          </a>
+        </div>
+      )}
     </main>
   );
 }
