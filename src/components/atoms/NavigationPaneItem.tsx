@@ -5,12 +5,13 @@ import useInBreakpoint from "../../hooks/useInBreakpoint";
 import useMatchTheme from "../../hooks/useMatchTheme";
 import { ThemeMode } from "../../themes";
 import Button from "./Button";
+import FolderIcon from "./FolderIcon";
 import ReactIcon from "./IconReact";
 
 type NavigationPaneItemProps = {
   text: string;
-  /** Search for icon name at https://react-icons.github.io/react-icons. */
-  icon: string | string[];
+  /** Search for icon name at https://react-icons.github.io/react-icons, or use "folder" for folder icon. */
+  icon: string | string[] | "folder";
   isActive?: boolean;
   onClick?: () => void;
 };
@@ -30,6 +31,10 @@ export default function NavigationPaneItem({ icon, text, isActive, onClick }: Na
         <Icon icon={icon[0]} />
       </motion.span>
     );
+
+  const FolderIconComponent = () => (
+    <FolderIcon isOpen={isActive} size={isMobile ? 24 : 32} />
+  );
 
   const hoverStyle: ThemeUICSSObject = {
     bg: "background",
@@ -61,7 +66,12 @@ export default function NavigationPaneItem({ icon, text, isActive, onClick }: Na
     <li>
       <Button unsetStyle sx={{ py: 1, px: 1, pr: 4 }} onClick={onClick}>
         <Flex as="span" sx={{ alignItems: "center", zIndex: 1 }}>
-          {typeof icon === "string" ? <Icon icon={icon} /> : <IconGroup icon={icon} />}
+          {icon === "folder" 
+            ? <FolderIconComponent />
+            : typeof icon === "string" 
+            ? <Icon icon={icon} /> 
+            : <IconGroup icon={icon} />
+          }
           <span sx={{ flex: 1, ml: [2, null, 3], fontSize: [14, null, "initial"] }}>{text}</span>
         </Flex>
         {isActive && <motion.span layoutId="navigation-indicator" {...fade} sx={hoverStyle} />}

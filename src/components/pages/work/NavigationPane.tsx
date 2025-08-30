@@ -19,7 +19,7 @@ export default function NavigationPane({ title, onNavigate }: NavigationPaneProp
             {work[category].map((job, j) => (
               <NavigationPaneItem
                 key={j}
-                icon={["FcFolder", "FcOpenedFolder"]}
+                icon="folder"
                 text={job.title}
                 isActive={title === job.title}
                 onClick={() => onNavigate(job.title)}
