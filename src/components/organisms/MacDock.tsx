@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useMemo } from "react";
 import { useClickAway, useKey } from "react-use";
 import { ThemeUICSSObject } from "theme-ui";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import useInBreakpoint from "../../hooks/useInBreakpoint";
 import useMatchTheme from "../../hooks/useMatchTheme";
+import useDimensions from "../../hooks/useDimentions";
 import { getRoute } from "../../misc/routes";
 import { ThemeMode } from "../../themes";
 import { zIndex } from "../../themes/common";
@@ -20,7 +21,9 @@ export default function MacDock() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [configPanel, setConfigPanel] = useState(false);
   const [clickOrigin, setClickOrigin] = useState<{ x: number; y: number } | null>(null);
-  const isMobile = useInBreakpoint(0);
+  const [isSocialPopupVisible, setIsSocialPopupVisible] = useState(false);
+  const isMobile = useInBreakpoint(1);
+  const { width: screenWidth } = useDimensions();
   
   const panelRef = useRef<HTMLElement>(null);
   const dockRef = useRef<HTMLDivElement>(null);
@@ -38,10 +41,14 @@ export default function MacDock() {
     const isDockClick = dockRef.current?.contains(event.target as Node);
     if (!isDockClick) {
       setIsConfigActive(false);
+      setIsSocialPopupVisible(false);
     }
   });
 
-  useKey("Escape", () => setIsConfigActive(false));
+  useKey("Escape", () => {
+    setIsConfigActive(false);
+    setIsSocialPopupVisible(false);
+  });
 
   // Calculate magnification based on hover (disabled on mobile)
   const getMagnification = (index: number): number => {
@@ -65,9 +72,10 @@ export default function MacDock() {
     pointerEvents: "none", // Allow clicks to pass through the container
     zIndex: zIndex.taskbar,
     
-    // Mobile responsive adjustment for bottom spacing
+    // Mobile responsive adjustment - full width taskbar
     ...(isMobile && {
-      bottom: "12px",
+      bottom: "0",
+      justifyContent: "stretch", // Full width on mobile
     }),
   };
 
@@ -106,17 +114,18 @@ export default function MacDock() {
       boxShadow: "0 8px 32px rgba(40, 142, 159, 0.4)",
     }),
 
-    // Enhanced responsive adjustments
+    // Mobile taskbar styling - full width, no rounded corners
     ...(isMobile && {
-      padding: "6px",
-      borderRadius: "16px",
-      gap: "2px",
-      maxWidth: "calc(100vw - 24px)", // Prevent overflow on small screens
-      overflowX: "auto", // Allow horizontal scroll if needed
-      "&::-webkit-scrollbar": {
-        display: "none", // Hide scrollbar on mobile
-      },
-      scrollbarWidth: "none", // Hide scrollbar on Firefox mobile
+      width: "100%",
+      padding: "8px 12px",
+      borderRadius: "0",
+      gap: `${gapSize}px`,
+      justifyContent: "space-evenly", // Distribute icons with gaps
+      border: "none",
+      borderTop: "1px solid rgba(255, 255, 255, 0.2)",
+      boxShadow: "0 -4px 20px rgba(0, 0, 0, 0.3)",
+      minHeight: `${taskbarHeight}px`,
+      height: `${taskbarHeight}px`,
     }),
   };
 
@@ -157,99 +166,311 @@ export default function MacDock() {
     </svg>
   );
 
-  // Dock icons configuration
-  const dockIcons = [
+  // Share icon for mobile
+  const ShareIcon = () => (
+    <svg 
+      stroke="currentColor" 
+      fill="currentColor" 
+      strokeWidth="0" 
+      viewBox="0 0 1024 1024" 
+      height="24" 
+      width="24" 
+      xmlns="http://www.w3.org/2000/svg"
+      sx={{ opacity: 0.8 }}
+    >
+      <path d="M752 664c-28.5 0-54.8 10-75.4 26.7L469.4 540.8a160.68 160.68 0 0 0 0-57.6l207.2-149.9C697.2 350 723.5 360 752 360c66.2 0 120-53.8 120-120s-53.8-120-120-120-120 53.8-120 120c0 11.6 1.6 22.7 4.7 33.3L439.9 415.8C410.7 377.1 364.3 352 312 352c-88.4 0-160 71.6-160 160s71.6 160 160 160c52.3 0 98.7-25.1 127.9-63.8l196.8 142.5c-3.1 10.6-4.7 21.8-4.7 33.3 0 66.2 53.8 120 120 120s120-53.8 120-120-53.8-120-120-120zm0-476c28.7 0 52 23.3 52 52s-23.3 52-52 52-52-23.3-52-52 23.3-52 52-52zM312 600c-48.5 0-88-39.5-88-88s39.5-88 88-88 88 39.5 88 88-39.5 88-88 88zm440 236c-28.7 0-52-23.3-52-52s23.3-52 52-52 52 23.3 52 52-23.3 52-52 52z"/>
+    </svg>
+  );
+
+
+  // Social popup component (mobile only - shows just the social icons)
+  const SocialPopup = () => (
+    <AnimatePresence>
+      {isSocialPopupVisible && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsSocialPopupVisible(false)}
+            sx={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.1)",
+              zIndex: zIndex.taskbar - 1,
+            }}
+          />
+          {/* Popup */}
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            sx={{
+              position: "fixed",
+              bottom: `${taskbarHeight + 16}px`, // Dynamic positioning based on taskbar height
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "flex",
+              gap: "8px",
+              padding: "12px",
+              borderRadius: "16px",
+              background: "rgba(255, 255, 255, 0.15)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+              zIndex: zIndex.taskbar,
+              
+              // Theme-specific adjustments
+              ...(isSoftTheme && {
+                background: "rgba(255, 255, 255, 0.2)",
+                border: "1px solid rgba(255, 255, 255, 0.3)",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+              }),
+
+              ...(isClassicTheme && {
+                background: "rgba(248, 243, 231, 0.2)",
+                border: "1px solid rgba(0, 0, 0, 0.2)",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
+              }),
+
+              ...(isTronTheme && {
+                background: "rgba(40, 142, 159, 0.15)",
+                border: "1px solid rgba(40, 142, 159, 0.3)",
+                boxShadow: "0 8px 32px rgba(40, 142, 159, 0.4)",
+              }),
+            }}
+          >
+            {desktopSocialIcons.map((icon, index) => (
+              <DockIcon
+                key={`social-popup-${icon.label}-${index}`}
+                iconName={icon.iconName}
+                customIcon={icon.customIcon}
+                label={icon.label}
+                onClick={icon.onClick}
+                href={icon.href}
+                isActive={false}
+                index={index}
+                onMouseEnter={() => {}}
+                onMouseLeave={() => {}}
+                scale={1}
+                isNavigationIcon={false}
+              />
+            ))}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+
+  // Base navigation icons
+  const navigationIcons = [
     {
+      iconName: undefined,
       customIcon: <HomeIcon />,
       label: "Home",
       onClick: () => router.push("/"),
+      href: undefined,
       isActive: isHomePage,
       isNavigationIcon: true,
     },
     {
       iconName: "FlatAbout" as const,
+      customIcon: undefined,
       label: "About Me",
       onClick: () => router.push("/about"),
+      href: undefined,
       isActive: router.asPath === "/about",
       isNavigationIcon: true,
     },
     {
       iconName: "FlatWork" as const,
+      customIcon: undefined,
       label: "My Work",
       onClick: () => router.push("/work"),
+      href: undefined,
       isActive: router.asPath === "/work",
       isNavigationIcon: true,
     },
     {
       iconName: "FlatSkills" as const,
+      customIcon: undefined,
       label: "Skills",
       onClick: () => router.push("/skills"),
+      href: undefined,
       isActive: router.asPath === "/skills",
       isNavigationIcon: true,
     },
     {
       iconName: "FlatEdu" as const,
+      customIcon: undefined,
       label: "Research Paper",
       onClick: () => router.push("/research-paper"),
+      href: undefined,
       isActive: router.asPath === "/research-paper",
       isNavigationIcon: true,
     },
     {
       iconName: "FlatAbout" as const,
+      customIcon: undefined,
       label: "My Mindset",
       onClick: () => router.push("/mindset"),
+      href: undefined,
       isActive: router.asPath === "/mindset",
       isNavigationIcon: true,
     },
     {
       iconName: "FlatWork" as const,
+      customIcon: undefined,
       label: "Roadmap",
       onClick: () => router.push("/roadmap"),
+      href: undefined,
       isActive: router.asPath === "/roadmap",
       isNavigationIcon: true,
     },
-    // Divider (visual separator)
+  ];
+
+  // Desktop social media icons
+  const desktopSocialIcons = [
     {
-      customIcon: <div sx={{ width: "2px", height: "32px", background: "rgba(255,255,255,0.3)", borderRadius: "1px" }} />,
-      label: "Separator",
-      onClick: () => {},
-      isActive: false,
-      isNavigationIcon: false,
-    },
-    // Social Media Icons
-    {
+      iconName: undefined,
       customIcon: <ReactIcon iconName="SiGithub" size={28} />,
       label: "GitHub",
+      onClick: undefined,
       href: "https://github.com/khang-nd",
       isActive: false,
       isNavigationIcon: false,
     },
     {
+      iconName: undefined,
       customIcon: <ReactIcon iconName="FaLinkedinIn" size={28} />,
       label: "LinkedIn", 
+      onClick: undefined,
       href: "https://www.linkedin.com/in/khangnd",
       isActive: false,
       isNavigationIcon: false,
     },
     {
+      iconName: undefined,
       customIcon: <ReactIcon iconName="SiTwitter" size={28} />,
       label: "Twitter",
+      onClick: undefined,
       href: "https://twitter.com/_khangnd", 
       isActive: false,
       isNavigationIcon: false,
     },
     {
+      iconName: undefined,
       customIcon: <ReactIcon iconName="SiFandom" size={28} />,
       label: "Fandom",
+      onClick: undefined,
       href: "https://dev.fandom.com/wiki/User:KhangND",
       isActive: false,
       isNavigationIcon: false,
     },
-    // Settings
+  ];
+
+  // Dynamic sizing calculation for mobile taskbar
+  const { iconSize, taskbarHeight, gapSize } = useMemo(() => {
+    if (!isMobile) {
+      return { iconSize: 48, taskbarHeight: 80, gapSize: 4 };
+    }
+
+    // Count total icons that will be rendered
+    const navigationCount = navigationIcons.length;
+    const socialCount = 1; // Share icon on mobile
+    const settingsCount = 1;
+    const totalIcons = navigationCount + socialCount + settingsCount;
+
+    // Available width calculation
+    const taskbarPadding = 24; // 12px on each side
+    const availableWidth = screenWidth - taskbarPadding;
+    
+    // Calculate optimal icon size
+    const minIconSize = 28; // Reduced minimum size to ensure gaps fit
+    const maxIconSize = 44; // Reduced max size to leave more room for gaps
+    const minGap = 4; // Minimum gap between icons - ensure visible separation
+    const maxGap = 12; // Maximum gap between icons
+    
+    // Try different icon sizes to find the best fit
+    let optimalIconSize = minIconSize; // Start with minimum
+    let optimalGap = minGap; // Start with minimum gap
+    
+    // Calculate what fits with guaranteed minimum gaps
+    for (let iconSize = maxIconSize; iconSize >= minIconSize; iconSize -= 2) {
+      const totalIconsWidth = totalIcons * iconSize;
+      const requiredGapSpace = (totalIcons - 1) * minGap;
+      const totalRequiredWidth = totalIconsWidth + requiredGapSpace;
+      
+      if (totalRequiredWidth <= availableWidth) {
+        // This size fits! Calculate actual gap we can use
+        const remainingWidth = availableWidth - totalIconsWidth;
+        const calculatedGap = remainingWidth / (totalIcons - 1);
+        
+        optimalIconSize = iconSize;
+        optimalGap = Math.min(maxGap, calculatedGap);
+        break;
+      }
+    }
+    
+    // Fallback: if nothing fits with minimum gaps, force minimum size and reduce gaps
+    if (optimalIconSize === minIconSize && optimalGap === minGap) {
+      const totalIconsWidth = totalIcons * minIconSize;
+      const remainingWidth = Math.max(0, availableWidth - totalIconsWidth);
+      optimalGap = Math.max(1, remainingWidth / (totalIcons - 1)); // At least 1px gap
+    }
+    
+    // Calculate taskbar height based on icon size
+    const padding = 16; // 8px top + 8px bottom
+    const calculatedHeight = optimalIconSize + padding;
+    
+    return {
+      iconSize: optimalIconSize,
+      taskbarHeight: calculatedHeight,
+      gapSize: optimalGap
+    };
+  }, [isMobile, screenWidth, navigationIcons.length]);
+
+  // Dock icons configuration (responsive)
+  const dockIcons = [
+    ...navigationIcons,
+    
+    // Mobile: Just the share icon (no separator)
+    ...(isMobile ? [
+      {
+        iconName: undefined,
+        customIcon: <ShareIcon />,
+        label: "Share",
+        onClick: () => setIsSocialPopupVisible(!isSocialPopupVisible),
+        href: undefined,
+        isActive: isSocialPopupVisible,
+        isNavigationIcon: false,
+      }
+    ] : [
+      // Desktop: Separator + individual social icons
+      {
+        iconName: undefined,
+        customIcon: <div sx={{ width: "2px", height: "32px", background: "rgba(255,255,255,0.3)", borderRadius: "1px" }} />,
+        label: "Separator",
+        onClick: () => {},
+        href: undefined,
+        isActive: false,
+        isNavigationIcon: false,
+      },
+      ...desktopSocialIcons
+    ]),
+    
+    // Settings (always present)
     {
       iconName: "FlatSettings" as const,
+      customIcon: undefined,
       label: "Settings",
       onClick: () => setIsConfigActive(!isConfigActive),
+      href: undefined,
       isActive: isConfigActive,
       isNavigationIcon: false,
     },
@@ -283,11 +504,13 @@ export default function MacDock() {
               onMouseLeave={handleMouseLeave}
               scale={getMagnification(index)}
               isNavigationIcon={icon.isNavigationIcon}
+              customSize={isMobile ? iconSize : undefined}
             />
           ))}
         </motion.div>
       </div>
       
+      <SocialPopup />
       <PanelConfig isVisible={isConfigActive} ref={panelRef} />
     </>
   );

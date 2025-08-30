@@ -19,6 +19,7 @@ export type DockIconProps = {
   onMouseLeave?: () => void;
   scale?: number;
   isNavigationIcon?: boolean;
+  customSize?: number; // Optional custom size for responsive behavior
 };
 
 export default function DockIcon({
@@ -33,11 +34,12 @@ export default function DockIcon({
   onMouseLeave,
   scale = 1,
   isNavigationIcon = false,
+  customSize,
 }: DockIconProps) {
   const isMobile = useInBreakpoint(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
   
-  const baseSize = isMobile ? 40 : 48;
+  const baseSize = customSize || (isMobile ? 40 : 48);
   const currentSize = baseSize * scale;
 
   const iconContainerStyle: ThemeUICSSObject = {

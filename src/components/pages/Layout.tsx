@@ -4,6 +4,9 @@ import { Fragment, ReactNode, useContext, useEffect } from "react";
 import { ThemeUICSSObject } from "theme-ui";
 import { GlobalContext, BackgroundMode } from "../../contexts/GlobalContext";
 import { useUnsplashBackground } from "../../hooks/useUnsplashBackground";
+import useMatchTheme from "../../hooks/useMatchTheme";
+import useTaskbarHeight from "../../hooks/useTaskbarHeight";
+import { ThemeMode } from "../../themes";
 import Navigation from "../molecules/Navigation";
 import Desktop from "../organisms/Desktop";
 import MacDock from "../organisms/MacDock";
@@ -15,6 +18,8 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps): JSX.Element {
   const { background } = useContext(GlobalContext);
   const { imageUrl, attribution, loading, error, fetchRandomBackground, clearBackground } = useUnsplashBackground();
+  const isLiquidGlassTheme = useMatchTheme(ThemeMode.LiquidGlass);
+  const taskbarHeight = useTaskbarHeight();
 
   // Fetch random background when Random mode is selected
   useEffect(() => {
@@ -45,8 +50,9 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
         }
         return { background: "secondary" };
       default:
+        // Use special blue-gray background for Liquid Glass theme's "No background" option
         return {
-          background: "secondary",
+          background: isLiquidGlassTheme ? "#e8eaf6" : "secondary",
         };
     }
   };
@@ -73,7 +79,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
         <div
           sx={{
             position: "fixed",
-            bottom: "80px",
+            bottom: `${taskbarHeight + 16}px`, // Dynamic positioning based on taskbar height
             right: "16px",
             padding: "8px 12px",
             background: "rgba(0, 0, 0, 0.7)",
