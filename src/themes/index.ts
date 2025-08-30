@@ -9,6 +9,7 @@ export enum ThemeMode {
   Soft = "soft",
   Tron = "tron",
   Classic = "classic",
+  LiquidGlass = "liquidglass",
 }
 
 const theme: Theme = {
@@ -70,6 +71,21 @@ const theme: Theme = {
         white: "#fff",
         red: "#166775",
         green: "#0b363d",
+      },
+
+      liquidglass: {
+        background: "rgba(255, 255, 255, 0.1)",
+        primary: "rgba(255, 255, 255, 0.2)",
+        secondary: "rgba(255, 255, 255, 0.15)",
+        highlight: "rgba(59, 130, 246, 0.6)",
+        shadow: "rgba(0, 0, 0, 0.1)",
+        text: "#000",
+        textReverse: "#000",
+        muted: "rgba(0, 0, 0, 0.6)",
+        mutedReverse: "rgba(0, 0, 0, 0.7)",
+        white: "rgba(255, 255, 255, 0.9)",
+        red: "rgba(239, 68, 68, 0.8)",
+        green: "rgba(16, 185, 129, 0.8)",
       },
     },
   },

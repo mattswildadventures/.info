@@ -10,21 +10,24 @@ type FolderIconProps = {
 };
 
 const AnimatedFolderIcon = ({ isOpen = false, size = 24, className }: FolderIconProps) => {
+  const iconStyle = process.env.NEXT_PUBLIC_FOLDER_ICON_COLOR || 'theme';
+  const isTronTheme = useMatchTheme(ThemeMode.Tron);
+  const isClassicTheme = useMatchTheme(ThemeMode.Classic);
+  const isSoftTheme = useMatchTheme(ThemeMode.Soft);
+  
   const getFolderColor = () => {
-    const iconStyle = process.env.NEXT_PUBLIC_FOLDER_ICON_COLOR || 'theme';
-    
     if (iconStyle === 'macos') {
       return '#007AFF'; // macOS blue
     }
     
     // Theme-based coloring with fallbacks
-    if (useMatchTheme(ThemeMode.Tron)) {
+    if (isTronTheme) {
       return '#288e9f';
     }
-    if (useMatchTheme(ThemeMode.Classic)) {
+    if (isClassicTheme) {
       return '#f9a48c';
     }
-    if (useMatchTheme(ThemeMode.Soft)) {
+    if (isSoftTheme) {
       return '#93a1d2';
     }
     

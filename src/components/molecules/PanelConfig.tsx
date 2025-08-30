@@ -17,12 +17,13 @@ type PanelConfigProps = {
 };
 
 const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElement>) => {
-  const { reduceMotion, hideTaskbar, background } = useContext(GlobalContext);
+  const { reduceMotion, hideTaskbar, background, glassAnimations } = useContext(GlobalContext);
   
   // Move hook calls outside conditional usage
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
   const isClassicTheme = useMatchTheme(ThemeMode.Classic);
   const isTronTheme = useMatchTheme(ThemeMode.Tron);
+  const isLiquidGlassTheme = useMatchTheme(ThemeMode.LiquidGlass);
 
   const panelConfigStyle: ThemeUICSSObject = {
     p: 4,
@@ -50,8 +51,16 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
       boxShadow: "0 4px 20px rgba(40, 142, 159, 0.3), 0 0 0 1px var(--theme-ui-colors-shadow)",
     }),
 
+    ...(isLiquidGlassTheme && {
+      bg: "rgba(255, 255, 255, 0.2)",
+      backdropFilter: "blur(20px) saturate(1.8)",
+      WebkitBackdropFilter: "blur(20px) saturate(1.8)",
+      border: "1px solid rgba(255, 255, 255, 0.2)",
+      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+    }),
+
     // Default theme (Flat) with Mac-style shadow
-    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && {
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && !isLiquidGlassTheme && {
       boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)",
     }),
   };
@@ -82,6 +91,9 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
         </li>
         <li>
           <ThemeButton theme={ThemeMode.Classic} />
+        </li>
+        <li sx={{ gridColumn: "1 / -1" }}>
+          <ThemeButton theme={ThemeMode.LiquidGlass} />
         </li>
       </List>
       <Toggle
@@ -124,6 +136,16 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
           />
         </div>
       </div>
+
+      {isLiquidGlassTheme && (
+        <Toggle
+          id="toggle-glass-animations"
+          label="Glass animations"
+          isChecked={glassAnimations.val}
+          onChange={() => glassAnimations.set(!glassAnimations.val)}
+          style={{ mb: 3 }}
+        />
+      )}
     </MotionBox>
   );
 };

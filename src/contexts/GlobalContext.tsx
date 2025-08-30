@@ -19,6 +19,7 @@ type GlobalContextType = {
   reduceMotion: Context;
   hideTaskbar: Context;
   background: Context<BackgroundMode>;
+  glassAnimations: Context;
 };
 
 type GlobalProviderProps = {
@@ -30,6 +31,7 @@ export const GlobalContext = createContext<GlobalContextType>({
   reduceMotion: { val: false, set: () => {} },
   hideTaskbar: { val: false, set: () => {} },
   background: { val: BackgroundMode.None, set: () => {} },
+  glassAnimations: { val: true, set: () => {} },
 });
 
 export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element => {
@@ -47,6 +49,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
   const [_background, _setBackground] = useLocalStorage("background", BackgroundMode.None);
   const [background, setBackground] = useState(BackgroundMode.None);
 
+  const [_glassAnimations, _setGlassAnimations] = useLocalStorage("glassAnimations", true);
+  const [glassAnimations, setGlassAnimations] = useState(true);
+
   useEffect(() => {
     // workaround for Theme UI's color mode being default to user preference,
     // which is light/dark, altering that to match site's default
@@ -55,6 +60,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
   useEffect(() => setReduceAnim(_reduceAnim as boolean), [_reduceAnim]);
   useEffect(() => setHideTaskbar(_hideTaskbar as boolean), [_hideTaskbar]);
   useEffect(() => setBackground(_background as BackgroundMode), [_background]);
+  useEffect(() => setGlassAnimations(_glassAnimations as boolean), [_glassAnimations]);
 
   const context: GlobalContextType = {
     theme: {
@@ -72,6 +78,10 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
     background: {
       val: background,
       set: _setBackground as Dispatch<SetStateAction<BackgroundMode>>,
+    },
+    glassAnimations: {
+      val: glassAnimations,
+      set: _setGlassAnimations as Dispatch<SetStateAction<boolean>>,
     },
   };
 

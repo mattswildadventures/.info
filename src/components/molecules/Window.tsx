@@ -9,6 +9,7 @@ import useMatchTheme from "../../hooks/useMatchTheme";
 import { sizes, ThemeMode } from "../../themes";
 import { zIndex } from "../../themes/common";
 import { Box, MotionBox } from "../atoms/Container";
+import LiquidGlass from "../atoms/LiquidGlass";
 import WindowBody from "../atoms/window/Body";
 import WindowTitle from "../atoms/window/Title";
 
@@ -37,6 +38,7 @@ export default function Window({ title, children, help }: WindowProps) {
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
   const isClassicTheme = useMatchTheme(ThemeMode.Classic);
   const isTronTheme = useMatchTheme(ThemeMode.Tron);
+  const isLiquidGlassTheme = useMatchTheme(ThemeMode.LiquidGlass);
 
   const style: ThemeUICSSObject = {
     maxWidth: w,
@@ -65,18 +67,39 @@ export default function Window({ title, children, help }: WindowProps) {
       boxShadow: (theme) => `0 4px 20px rgba(40, 142, 159, 0.3), 0 0 0 1px ${theme.colors?.shadow}`,
     }),
 
+    ...(isLiquidGlassTheme && {
+      bg: "transparent",
+      boxShadow: "none",
+    }),
+
     // Default theme (Flat)
-    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && {
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && !isLiquidGlassTheme && {
       boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)",
     }),
   };
 
-  return (
-    <Container ref={ref} sx={style} {...animation}>
+  const WindowContent = (
+    <>
       <WindowTitle onFullscreen={toggleFullscreen} help={help}>
         {isPresent && title}
       </WindowTitle>
       <WindowBody>{children}</WindowBody>
+    </>
+  );
+
+  if (isLiquidGlassTheme) {
+    return (
+      <Container ref={ref} sx={style} {...animation}>
+        <LiquidGlass intensity="standard" interactive>
+          {WindowContent}
+        </LiquidGlass>
+      </Container>
+    );
+  }
+
+  return (
+    <Container ref={ref} sx={style} {...animation}>
+      {WindowContent}
     </Container>
   );
 }
