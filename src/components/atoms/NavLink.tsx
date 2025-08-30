@@ -20,7 +20,15 @@ export default function NavLink({ data }: NavLinkProps) {
   const isHomePage = useHomepage();
   const isLandscape = useIsLandscape();
   const isMobile = useInBreakpoint(0, isLandscape);
-  const defaultSize = isMobile && isLandscape ? 120 : 160;
+  const isMobilePortrait = useInBreakpoint(1); // Use same breakpoint as taskbar
+  
+  // Responsive sizing for tiles with adequate touch targets
+  const defaultSize = (() => {
+    if (isMobilePortrait) return 150; // Mobile portrait: good touch target size
+    if (isMobile && isLandscape) return 130; // Mobile landscape: still adequate
+    return 160; // Desktop: original size
+  })();
+  
   const sidebarSize = defaultSize / 2;
   const isActive = useRouter().asPath === data.path;
   
@@ -36,7 +44,8 @@ export default function NavLink({ data }: NavLinkProps) {
       width: defaultSize,
       height: defaultSize,
       opacity: 1,
-      margin: sizes[isMobile && isLandscape ? 2 : 3],
+      // Use margin only for desktop, mobile uses grid gap
+      margin: isMobilePortrait ? 0 : sizes[isMobile && isLandscape ? 2 : 3],
       transition: useReduceMotion({ duration: 0.6, delay: 0.3 }),
     },
   };
@@ -145,6 +154,7 @@ export default function NavLink({ data }: NavLinkProps) {
         animate="main"
         initial="main"
         whileHover={{ scale: 0.95 }}
+        whileTap={{ scale: 0.9 }} // Better touch feedback on mobile
       >
         {isActive && <motion.span layoutId="indicator" sx={indicatorStyle} transition={spring} />}
         <MotionIcon
@@ -158,7 +168,12 @@ export default function NavLink({ data }: NavLinkProps) {
           variants={labelVariants}
           animate="main"
           initial="main"
-          sx={{ whiteSpace: "nowrap", overflow: "hidden", fontSize: isMobile && isLandscape ? 16 : 20 }}
+          sx={{ 
+            whiteSpace: "nowrap", 
+            overflow: "hidden", 
+            fontSize: isMobilePortrait ? 14 : (isMobile && isLandscape ? 16 : 20),
+            textAlign: "center"
+          }}
         >
           {data.title}
         </motion.span>
