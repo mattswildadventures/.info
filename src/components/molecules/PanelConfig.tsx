@@ -112,7 +112,7 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
           />
           <Toggle
             id="toggle-background-custom"
-            label="Custom image"
+            label="My background"
             isChecked={background.val === BackgroundMode.Custom}
             onChange={() => background.set(BackgroundMode.Custom)}
           />

@@ -101,7 +101,7 @@ export default function NavigationPane({
               sx={{
                 fontSize: "16px",
                 fontWeight: "600",
-                color: activeCategory === category ? "highlight" : "text", // "#ffffff", //
+                color: "text", // Use consistent text color instead of highlight
                 mb: 1,
               }}
             >
@@ -137,7 +137,7 @@ export default function NavigationPane({
                     sx={{
                       fontSize: "14px",
                       fontWeight: "500",
-                      color: title === item.title ? "highlight" : "text", //"#ffffff", //
+                      color: "text", // Use consistent text color instead of highlight
                       mb: 1,
                     }}
                   >
