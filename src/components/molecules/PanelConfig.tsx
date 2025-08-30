@@ -2,7 +2,7 @@ import { lighten } from "@theme-ui/color";
 import { Variants } from "framer-motion";
 import { ForwardedRef, forwardRef, useContext } from "react";
 import { ThemeUICSSObject } from "theme-ui";
-import { GlobalContext } from "../../contexts/GlobalContext";
+import { GlobalContext, BackgroundMode } from "../../contexts/GlobalContext";
 import useMatchTheme from "../../hooks/useMatchTheme";
 import useReduceMotion from "../../hooks/useReduceMotion";
 import useTaskbarHeight from "../../hooks/useTaskbarHeight";
@@ -17,7 +17,7 @@ type PanelConfigProps = {
 };
 
 const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElement>) => {
-  const { reduceMotion, hideTaskbar } = useContext(GlobalContext);
+  const { reduceMotion, hideTaskbar, background } = useContext(GlobalContext);
   
   // Move hook calls outside conditional usage
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
@@ -96,7 +96,34 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
         label="Hide taskbar"
         isChecked={hideTaskbar.val}
         onChange={() => hideTaskbar.set(!hideTaskbar.val)}
+        style={{ mb: 3 }}
       />
+      
+      <div sx={{ mb: 3 }}>
+        <span sx={{ fontSize: 1, fontWeight: "bold", mb: 2, display: "block" }}>
+          Background
+        </span>
+        <div sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Toggle
+            id="toggle-background-none"
+            label="None"
+            isChecked={background.val === BackgroundMode.None}
+            onChange={() => background.set(BackgroundMode.None)}
+          />
+          <Toggle
+            id="toggle-background-custom"
+            label="Custom image"
+            isChecked={background.val === BackgroundMode.Custom}
+            onChange={() => background.set(BackgroundMode.Custom)}
+          />
+          <Toggle
+            id="toggle-background-random"
+            label="Random nature"
+            isChecked={background.val === BackgroundMode.Random}
+            onChange={() => background.set(BackgroundMode.Random)}
+          />
+        </div>
+      </div>
     </MotionBox>
   );
 };

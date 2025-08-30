@@ -8,10 +8,17 @@ type Context<T = boolean> = {
   set: Dispatch<SetStateAction<T>>;
 };
 
+export enum BackgroundMode {
+  None = "none",
+  Custom = "custom",
+  Random = "random",
+}
+
 type GlobalContextType = {
   theme: Context<ThemeMode>;
   reduceMotion: Context;
   hideTaskbar: Context;
+  background: Context<BackgroundMode>;
 };
 
 type GlobalProviderProps = {
@@ -22,6 +29,7 @@ export const GlobalContext = createContext<GlobalContextType>({
   theme: { val: ThemeMode.Flat, set: () => {} },
   reduceMotion: { val: false, set: () => {} },
   hideTaskbar: { val: false, set: () => {} },
+  background: { val: BackgroundMode.None, set: () => {} },
 });
 
 export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element => {
@@ -36,6 +44,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
   const [_hideTaskbar, _setHideTaskbar] = useLocalStorage("hideTaskbar", false);
   const [hideTaskbar, setHideTaskbar] = useState(false);
 
+  const [_background, _setBackground] = useLocalStorage("background", BackgroundMode.None);
+  const [background, setBackground] = useState(BackgroundMode.None);
+
   useEffect(() => {
     // workaround for Theme UI's color mode being default to user preference,
     // which is light/dark, altering that to match site's default
@@ -43,6 +54,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
   }, [_theme]);
   useEffect(() => setReduceAnim(_reduceAnim as boolean), [_reduceAnim]);
   useEffect(() => setHideTaskbar(_hideTaskbar as boolean), [_hideTaskbar]);
+  useEffect(() => setBackground(_background as BackgroundMode), [_background]);
 
   const context: GlobalContextType = {
     theme: {
@@ -56,6 +68,10 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
     hideTaskbar: {
       val: hideTaskbar,
       set: _setHideTaskbar as Dispatch<SetStateAction<boolean>>,
+    },
+    background: {
+      val: background,
+      set: _setBackground as Dispatch<SetStateAction<BackgroundMode>>,
     },
   };
 
