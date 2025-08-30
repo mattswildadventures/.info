@@ -2,6 +2,7 @@ import { motion, Transition, Variants } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ThemeUICSSObject } from "theme-ui";
+import { useBackgroundLuminance } from "../../hooks/useBackgroundLuminance";
 import useHomepage from "../../hooks/useHomepage";
 import useInBreakpoint from "../../hooks/useInBreakpoint";
 import useIsLandscape from "../../hooks/useIsLandscape";
@@ -27,6 +28,8 @@ export default function NavLink({ data }: NavLinkProps) {
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
   const isClassicTheme = useMatchTheme(ThemeMode.Classic);
   const isTronTheme = useMatchTheme(ThemeMode.Tron);
+  const isLiquidGlassTheme = useMatchTheme(ThemeMode.LiquidGlass);
+  const backgroundLuminance = useBackgroundLuminance();
 
   const linkVariants: Variants = {
     main: {
@@ -85,8 +88,30 @@ export default function NavLink({ data }: NavLinkProps) {
       boxShadow: (theme) => `0 2px 10px rgba(40, 142, 159, 0.3), 0 0 0 1px ${theme.colors?.shadow}`,
     }),
 
+    ...(isLiquidGlassTheme && {
+      // Enhanced glass backdrop for better text contrast
+      bg: backgroundLuminance.isDark 
+        ? "rgba(255, 255, 255, 0.25)" // Lighter glass on dark backgrounds
+        : "rgba(255, 255, 255, 0.15)", // Standard glass on light backgrounds
+      backdropFilter: "blur(20px) saturate(1.8) brightness(1.1)",
+      WebkitBackdropFilter: "blur(20px) saturate(1.8) brightness(1.1)",
+      border: "1px solid rgba(255, 255, 255, 0.3)",
+      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+      
+      // Adaptive text color based on background
+      color: backgroundLuminance.textColor,
+      
+      // Add text shadow for extra contrast on challenging backgrounds
+      textShadow: backgroundLuminance.isDark 
+        ? "0 1px 2px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.3)" // Dark shadow for white text
+        : "0 1px 2px rgba(255, 255, 255, 0.8), 0 0 4px rgba(255, 255, 255, 0.3)", // Light shadow for black text
+      
+      // Smooth color transitions
+      transition: "color 0.3s ease, text-shadow 0.3s ease, background-color 0.3s ease",
+    }),
+
     // Default theme (Flat) with Mac-style shadow
-    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && {
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && !isLiquidGlassTheme && {
       boxShadow: "0 2px 10px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)",
     }),
   };
