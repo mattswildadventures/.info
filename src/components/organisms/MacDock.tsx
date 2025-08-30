@@ -194,6 +194,20 @@ export default function MacDock() {
       isActive: router.asPath === "/research-paper",
       isNavigationIcon: true,
     },
+    {
+      iconName: "FlatAbout" as const,
+      label: "My Mindset",
+      onClick: () => router.push("/mindset"),
+      isActive: router.asPath === "/mindset",
+      isNavigationIcon: true,
+    },
+    {
+      iconName: "FlatWork" as const,
+      label: "Roadmap",
+      onClick: () => router.push("/roadmap"),
+      isActive: router.asPath === "/roadmap",
+      isNavigationIcon: true,
+    },
     // Divider (visual separator)
     {
       customIcon: <div sx={{ width: "2px", height: "32px", background: "rgba(255,255,255,0.3)", borderRadius: "1px" }} />,

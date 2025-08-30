@@ -13,6 +13,9 @@ const routes: Route[] = [
   // Changed from Blog to Research Paper - 2025-01-31
   // Old: { path: "/blog", title: "Blog", icon: "FlatEdu" },
   { path: "/research-paper", title: "Research Paper", icon: "FlatEdu" },
+  // New sections added - 2025-01-31
+  { path: "/mindset", title: "My Mindset", icon: "FlatAbout" },
+  { path: "/roadmap", title: "Roadmap", icon: "FlatWork" },
 ];
 
 export function getRoute(path: string) {

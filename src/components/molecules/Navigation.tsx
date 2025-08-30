@@ -30,7 +30,7 @@ export default function Navigation() {
 
   const containerStyle: ThemeUICSSObject = {
     display: "grid",
-    gridTemplateColumns: "auto auto",
+    gridTemplateColumns: "auto auto auto", // Changed to 3 columns for 3×2 grid
     position: "absolute",
   };
 

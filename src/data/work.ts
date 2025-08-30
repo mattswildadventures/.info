@@ -9,40 +9,81 @@ type Job = {
 };
 
 const work: Record<string, Job[]> = {
-  Careers: [
+  Career: [
     {
-      title: "Unios",
-      timeline: "Jan 2022 - current",
-      description: "An Australia-based company specializing in lighting solutions and manufacturing",
-      remark: "Work in progress...",
+      title: "Tennis Coaching",
+      timeline: "Feb 2009 - 2015",
+      description: "A great way to start off a career with a sport you enjoy",
+      remark: "First work 3 months out of High School, going in with 12 years of playing tennis, I coached kids from as young as 5 up to 15 years old. Having played since I was 7 years old this was a great first job to land in. ",
+      activities: [
+        "Planned each lesson each week",
+        "Identified kids with strong capabilities to offer private coaching",
+        "Continually attended training workshops. Had workshops with Rafael Nadals old coach, Jofre Porta.",
+        "Build team numbers back up to full strength for the Wednesday Night Superleague comp. From 5 teams back up to 12 for over 2 seasons."
+      ]
     },
     {
-      title: "Bosch",
-      timeline: "Aug 2019 - Dec 2021",
-      description: "A multi-national technology company based in Germany, whose major business sector is mobility",
+      title: "Save on Computers",
+      timeline: "July 2012 - Dec 2012",
+      description: "A small computer store to kickstart my Technology Career.",
       remark:
-        "A new fresh start for me after having finished my service for the country. I was able to learn a lot about processes, new techs and best practices, and apply to my daily work. And prominently, I could utilize my English in daily communications and formal meetings.",
+        "This popped up during my time studying at Uni. I had done odd-jobs helping people with their computers over the years, however this became my first paid IT gig.",
       activities: [
-        "Develop tools on top of the $1 to support an internal business unit",
-        "Follow the Scrum framework's principles to engage in the software development process",
-        "Define, apply and continuously improve the software development process to adapt and overcome challenges",
-        "Actively review and improve individual skills competency over the time",
-        "Tools used: Visual Studio Code, IBM ELM tools, Balsamiq Mockups, MS Office, Skype",
+        "Storefront product setup/unpack at the start and end of each day",
+        "Diagnosing computers/laptops for technical issues",
+        "Quoting, invoicing and processing payments",
+        "Recording job actions for history and other technicians",
+        "Data Recovery, system failure recovery, performance issues, virus repairs etc."
       ],
-      techs: "HTML, CSS, Sass, JS, jQuery, ReactJS, $2, $3, $4, $5, $6",
+    },
+    {
+      title: "YesIT",
+      timeline: "Sept 2012 - July 2023",
+      description: "The platform ",
+      remark:
+        "",
+      activities: [
+        "Develop software utilities to support internal users",
+        "Engage in a robust, long-standing system",
+        "Tools used: WebSphere, ClearCase",
+      ],
+      techs: "HTML, Bootstrap, JS, Java, JSP, XML, DB2 JDBC",
+    },
+    {
+      title: "VALD",
+      timeline: "September 2024 - March 2025",
+      description: "A world leader in musculoskeletal assessment and rehabilitation technologies",
+      remark:
+        "I had a chance offering to work casually inside of VALD's manufacturing team while building out my other ventures. I honestly loved working there, for the few months I had. Great people, great conversations while building and learning about innovative technologies that produce insights to things I'm interested in. It had a great culture overall that came with an in-house barisata and chef. Brekkie and Lunch included.",
+      activities: [
+        "Develop software utilities to support internal users",
+        "Engage in a robust, long-standing system",
+        "Tools used: WebSphere, ClearCase",
+      ],
+      techs: "HTML, Bootstrap, JS, Java, JSP, XML, DB2 JDBC",
+    },
+    {
+      title: "Fractal Labs",
+      timeline: "Sept 2012 - Present",
+      description: "A Research and Education Project helping people live and operate at their natural best.",
+      remark: "Fractal Labs is an ongoing project focused on mindset research and applied education.",
+      activities: [
+        "Research into Mindset Architecture and Construction",
+        "Develop models to represent how beliefs, values, and principles are formed",
+        "Design prototype tools to help individuals understand and reshape their mindset structures",
+        "Apply constructivist learning principles to support personal and professional growth"
+      ],
+      techs: "Fractal Linguistics, $1, $2, $3",
       links: {
-        $1: ["IBM ELM toolsuite", "https://jazz.net/products/elm/"],
-        $2: ["DXL", "https://en.wikipedia.org/wiki/DOORS_Extension_Language"],
-        $3: ["OSLC", "https://open-services.net/"],
-        $4: ["OpenSocial", "https://en.wikipedia.org/wiki/OpenSocial"],
-        $5: ["ag-Grid", "https://www.ag-grid.com/"],
-        $6: ["vis-network", "https://visjs.github.io/vis-network/docs/network/"],
+        $1: ["Systems Thinking", "https://www.youtube.com/watch?v=Su8r4YKX_ls&pp=ygUQc3lzdGVtcyB0aGlua2luZw%3D%3D"],
+        $2: ["Mental Models", "https://www.youtube.com/watch?v=ocMH2l2ptpc&t=383s&pp=ygUNbWVudGFsIG1vZGVscw%3D%3D"],
+        $3: ["Constructivist Learning", "https://www.youtube.com/watch?v=WduUwOHZES0&t=163s&pp=ygUXY29uc3RydWN0aXZpc3QgbGVhcm5pbmc%3D"],
       },
     },
     {
-      title: "Cathay Life",
-      timeline: "Feb 2017 - Apr 2017",
-      description: "A Taiwanese life insurance company",
+      title: "Minnio",
+      timeline: "Sept 2012 - July 2023",
+      description: "A Technology Solution Provider Company",
       remark:
         "This is the first company I joined after my graduation. I was able to experience a professional working environment and learned from my seniors.",
       activities: [
@@ -51,100 +92,66 @@ const work: Record<string, Job[]> = {
         "Tools used: WebSphere, ClearCase",
       ],
       techs: "HTML, Bootstrap, JS, Java, JSP, XML, DB2 JDBC",
-    },
+    }
   ],
-  "Side Works": [
+  "Side Projects": [
     {
-      title: "Fandom",
-      timeline: "2016 - 2018",
+      title: "Matt's Wild Adventures",
+      timeline: "2024 - Present",
       description:
-        "A company providing wiki hosting and domain service for users and offering content created by users",
+        "Bringing my love for outdoor adventure experiences to friends and other adventurers.",
       remark:
-        "Fandom (formerly Wikia) is the platform that I started as a volunteering helper during my time at college. I was able to engage in my very first international environment, where I could communicate with a lot of people from various countries.",
+        "I've loved simple adventure weekends, hikes, camping trips, 4x4 activites, months of backpacking and everything in-between. Through all these experiences I loved and I want to continue to do with friends for the rest of my life. This is my way to bring people along to new experiences they may not have originally thought of.",
       activities: [
-        "Monitor $1's activities",
-        "Provide user support services",
-        "Content translations (blogs, help pages, articles)",
-        "Tools used: Slack, Jira, Crowdin, Google Docs",
+        "Plan and organise weekend adventure trips",
+        "Winging the heck out of these experiences, letting moments unfold rather than planned.",
+        "Building out a simple platform with tools as I need",
+        "See places around Australia and eventually international.",
       ],
-      links: {
-        $1: ["Vietnamese Community Central", "https://community.fandom.com/vi/wiki/Trang_Ch%C3%ADnh"],
-      },
     },
     {
-      title: "Fandom Developers",
-      timeline: "2016 - 2021",
-      description: "A community of Fandom volunteering developers",
-      remark:
-        "This is more or less my first code playground when I started to love front-end development. As a part of this community, I could learn and collaborate with the others to improve my coding skill. My favorite works: $2, $3.",
-      activities: [
-        "Develop extensions on top of the $1 platform (the core of every Fandom wiki)",
-        "Cross-review, improve existing scripts",
-        "Tool used: Fandom's code editor",
-      ],
-      techs: "HTML, CSS, JS, jQuery, $4",
-      links: {
-        $1: ["MediaWiki", "https://www.mediawiki.org/wiki/MediaWiki"],
-        $2: ["ArticleRating", "https://dev.fandom.com/wiki/ArticleRating"],
-        $3: ["FloatingToc", "https://dev.fandom.com/wiki/FloatingToc"],
-        $4: ["MediaWiki API", "https://doc.wikimedia.org/mediawiki-core/master/js/#!/api/mw.Api"],
-      },
-    },
-    {
-      title: "Win7 Simu",
+      title: "Knowledge Engine",
       timeline: "2019 - present",
-      description: "A simulator of Windows 7 on mobile",
+      description: "A platform that captures and connects personal and team knowledge into a living system that gets smarter every day interactions.",
       remark:
         "This is the biggest side project that I have started with a lot of time and effort invested. At first, it was simply made for me to apply things I have learned, something I would have fun building, but apparently it has some unforeseen potential, as it is surprisingly well-received and gets a lot of positive feedback and encouragement to advance it further. Visit its $1.",
       activities: [
-        "Simulate the functionalities and features of Windows 7 through web technologies",
-        "Integrate with Android's JS Interface, build and deploy to app store",
-        "Actively engage in user's experience and collect feedback",
-        "Tools used: Visual Studio Code, Android Studio, Crowdin",
+        "Developed MCP + API Gateway to let any client system plug in seamlessly",
+        "WIP: Designing Personal and Company Graphs to capture private learnings and shared insights",
+        "Integrated a Vector Store for lightning-fast semantic search",
+        "Created a Portal for users and companies to manage their knowledge growth",
+        "Added bridging protocols to allow federated, secure collaboration across multiple engines",
+        "Future Aims: Built a Knowledge Engine that connects tacit learning (what people do) with explicit knowledge (documents, SOPs, manuals)",
       ],
-      techs: "HTML, Sass, JS, VueJS, Vuex, Vue-i18n, axios, Firebase, FabricJS, Java",
-      links: {
-        $1: ["App page", "https://play.google.com/store/apps/details?id=com.visnalize.win7simu"],
-      },
     },
     {
-      title: "Winport",
-      timeline: "2020/2022",
-      description: "A window-styled, multi-theming portfolio",
-      remark:
-        "This very site you are viewing is my first website portfolio. The core design is inspired by Microsoft's Windows, with icons provided by $1 and $2. I built the $4 in 2020 out of fun and to practice a little bit into React's basic concepts. After 2 years, I came back to it and rewrote the whole thing from scratch using the same tech stacks as in my current job demand. It was a great experience building the $5 and realized how my skills had improved over the time. Feel free to check out the source code I made publicly available on $3, and do not hesitate to put a star if you like it.",
-      techs: ["v1 - HTML, Sass, JS, ReactJS, React Router", "v2 - NextJS, TypeScript, Framer Motion, Theme UI"],
-      links: {
-        $1: ["Freepik", "https://www.freepik.com/"],
-        $2: ["React Icons", "https://react-icons.github.io/react-icons"],
-        $3: ["Github", "https://github.com/khang-nd/khang-nd.github.io"],
-        $4: ["first version", "https://khang-nd.github.io"],
-        $5: ["second version", "https://khang-nd.vercel.app"],
-      },
+      title: "Mentavia",
+      "timeline": "2025 – present",
+      "description": "A mental-toolkit platform that helps you learn how to think so you can make better decisions, solve complex problems, and grow with confidence.",
+      "remark": "This project came after reflection learning about the skills developed while at YesIT which allowed me to understand the power of Mental Models much more. Having a simple name for patterns of thought was a huge eye-opener for the gaps in my own skills. This was built to provide access to those same tools that'll help to develop a powerful toolkit for others.",
+      "activities": [
+        "Defined the core promise: Work smarter, not harder.",
+        "Built Personalized Pathways tailored to goals and cognitive preferences.",
+        "Developed Pattern Recognition to reveal thinking habits with actionable insights.",
+        "Created Practice Tools & Frameworks to apply mental models to real problems.",
+        "Implemented Progress Tracking with milestones, streaks, and achievements.",
+        "Designed the 4A Pathway: Awareness → Articulation → Action → Achievement.",
+        "Shipped a Mental Toolkit Platform Dashboard to manage tools and view outcomes.",
+        "Ongoing: expanding the model library, outcomes views, and adaptive guidance."
+      ],
     },
     {
-      title: "Lucky Draw",
-      timeline: "2020",
-      description: "A simple web tool for organizing lucky drawing events",
+      title: "Braindump",
+      timeline: "2025",
+      description: "A simple tool I've built for my own problem.",
       remark:
-        "A side project in collaboration with my colleague, this tool was built to support a customer in organizing his special event. You can visit it $1.",
+        "This has been a simple tool I've built for myself to allow me to take audio recordings of thoughts and allow me to do something with them at a later stage.",
       techs: "HTML, Bootstrap, ReactJS, React-i18n",
       links: {
         $1: ["here", "https://quayso.com.vn/"],
       },
     },
-    {
-      title: "Fandom Utils",
-      timeline: "2020",
-      description: "Useful Fandom utilities all together",
-      remark:
-        "My first browser extension built to bring together all the utilities developed by me and fellow developers at the $1. The project is open-sourced, feel free to check out the source code on $2.",
-      techs: "HTML, CSS, JS, Svelte, Web Extension Polyfill",
-      links: {
-        $1: ["Fandom Dev Wiki", "https://dev.fandom.com/"],
-        $2: ["Github", "https://github.com/khang-nd/fandom-utils"],
-      },
-    },
+    
     {
       title: "7.css",
       timeline: "2020",
