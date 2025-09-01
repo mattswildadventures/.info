@@ -5,7 +5,10 @@ import { ThemeUICSSObject } from "theme-ui";
 import { fadeZoomIn } from "../../animations/fade";
 import { dockScaleIn, dockScaleInFallback } from "../../animations/dockScale";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import useInBreakpoint from "../../hooks/useInBreakpoint";
+import useIsLandscape from "../../hooks/useIsLandscape";
 import useMatchTheme from "../../hooks/useMatchTheme";
+import useTaskbarHeight from "../../hooks/useTaskbarHeight";
 import { sizes, ThemeMode } from "../../themes";
 import { zIndex } from "../../themes/common";
 import { Box, MotionBox } from "../atoms/Container";
@@ -24,9 +27,12 @@ export default function Window({ title, children, help }: WindowProps) {
   const [fullscreen, toggleFullscreen] = useToggle(false);
   const ref = useRef(null);
   const isPresent = useIsPresent();
+  const isLandscape = useIsLandscape();
+  const isMobile = useInBreakpoint(1); // Use 768px breakpoint for better mobile detection
+  const taskbarHeight = useTaskbarHeight();
   useFullscreen(ref, fullscreen);
   const w = ["100%", null, null, 900];
-  const h = ["100%", null, null, `calc(100% - ${sizes[2] * 2}px)`];
+  const h = isMobile ? "100%" : ["100%", null, null, `calc(100% - ${sizes[2] * 2}px)`];
 
   const Container = reduceMotion.val ? Box : MotionBox;
   
@@ -50,8 +56,19 @@ export default function Window({ title, children, help }: WindowProps) {
     zIndex: zIndex.window,
     overflow: "hidden",
 
-    // Apply Mac-style 12px border radius to all themes
-    borderRadius: "12px",
+    // Apply Mac-style 12px border radius to all themes, remove on mobile for square edges
+    borderRadius: isMobile ? "0" : "12px",
+    
+    // Mobile-specific positioning to fill available space properly
+    ...(isMobile && {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      width: "100%",
+      height: "100%",
+    }),
 
     ...(isSoftTheme && {
       bg: "primary",

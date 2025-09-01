@@ -12,7 +12,7 @@ type MacTrafficLightsProps = {
 
 export default function MacTrafficLights({ onClose, onMinimize, onMaximize }: MacTrafficLightsProps) {
   const isLandscape = useIsLandscape();
-  const isMobile = useInBreakpoint(0, isLandscape);
+  const isMobile = useInBreakpoint(1); // Use 768px breakpoint for better mobile detection
 
   const containerStyle: ThemeUICSSObject = {
     display: "flex",
@@ -81,16 +81,20 @@ export default function MacTrafficLights({ onClose, onMinimize, onMaximize }: Ma
         onClick={onClose}
         sx={closeButtonStyle}
       />
-      <button 
-        aria-label="Minimize"
-        onClick={onMinimize}
-        sx={minimizeButtonStyle}
-      />
-      <button 
-        aria-label="Maximize"
-        onClick={onMaximize}
-        sx={maximizeButtonStyle}
-      />
+      {!isMobile && (
+        <>
+          <button 
+            aria-label="Minimize"
+            onClick={onMinimize}
+            sx={minimizeButtonStyle}
+          />
+          <button 
+            aria-label="Maximize"
+            onClick={onMaximize}
+            sx={maximizeButtonStyle}
+          />
+        </>
+      )}
     </Flex>
   );
 }

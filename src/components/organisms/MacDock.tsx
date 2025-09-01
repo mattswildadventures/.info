@@ -22,8 +22,9 @@ export default function MacDock() {
   const [configPanel, setConfigPanel] = useState(false);
   const [clickOrigin, setClickOrigin] = useState<{ x: number; y: number } | null>(null);
   const [isSocialPopupVisible, setIsSocialPopupVisible] = useState(false);
-  const isMobile = useInBreakpoint(1);
+  const isMobile = useInBreakpoint(1); // Use 768px breakpoint for better mobile detection
   const { width: screenWidth } = useDimensions();
+  
   
   const panelRef = useRef<HTMLElement>(null);
   const dockRef = useRef<HTMLDivElement>(null);
@@ -62,9 +63,9 @@ export default function MacDock() {
   };
 
   // Dynamic sizing calculation for mobile taskbar - moved here before style objects
-  const { iconSize, taskbarHeight, gapSize } = useMemo(() => {
+  const { iconSize, taskbarHeight, gapSize, needsScrolling } = useMemo(() => {
     if (!isMobile) {
-      return { iconSize: 48, taskbarHeight: 80, gapSize: 4 };
+      return { iconSize: 48, taskbarHeight: 80, gapSize: 4, needsScrolling: false };
     }
 
     // Count total icons that will be rendered
@@ -73,15 +74,16 @@ export default function MacDock() {
     const settingsCount = 1;
     const totalIcons = navigationCount + socialCount + settingsCount;
 
-    // Available width calculation
-    const taskbarPadding = 24; // 12px on each side
-    const availableWidth = screenWidth - taskbarPadding;
+    // Available width calculation - account for iPhone safe area
+    const taskbarPadding = 20; // Reduced padding for better fit
+    const safeAreaInsets = 8; // Additional margin for iPhone safe areas
+    const availableWidth = screenWidth - taskbarPadding - safeAreaInsets;
     
-    // Calculate optimal icon size
-    const minIconSize = 28; // Reduced minimum size to ensure gaps fit
-    const maxIconSize = 44; // Reduced max size to leave more room for gaps
-    const minGap = 4; // Minimum gap between icons - ensure visible separation
-    const maxGap = 12; // Maximum gap between icons
+    // Calculate optimal icon size - more aggressive sizing
+    const minIconSize = 24; // Further reduced minimum size
+    const maxIconSize = 40; // Reduced max size to leave more room for gaps
+    const minGap = 1; // Absolute minimum 1px gap as requested
+    const maxGap = 8; // Reduced maximum gap
     
     // Try different icon sizes to find the best fit
     let optimalIconSize = minIconSize; // Start with minimum
@@ -104,21 +106,33 @@ export default function MacDock() {
       }
     }
     
-    // Fallback: if nothing fits with minimum gaps, force minimum size and reduce gaps
+    // More aggressive fallback: if nothing fits with minimum gaps, force fit
     if (optimalIconSize === minIconSize && optimalGap === minGap) {
       const totalIconsWidth = totalIcons * minIconSize;
       const remainingWidth = Math.max(0, availableWidth - totalIconsWidth);
       optimalGap = Math.max(1, remainingWidth / (totalIcons - 1)); // At least 1px gap
+      
+      // If still doesn't fit, enable horizontal scrolling and use minimum values
+      if (totalIconsWidth + (totalIcons - 1) * 1 > availableWidth) {
+        // Force minimum icon size with 1px gaps - will enable scrolling
+        optimalIconSize = Math.max(20, minIconSize); // Absolute minimum
+        optimalGap = 1; // 1px as requested
+      }
     }
     
     // Calculate taskbar height based on icon size
     const padding = 16; // 8px top + 8px bottom
     const calculatedHeight = optimalIconSize + padding;
     
+    // Check if we need horizontal scrolling
+    const totalRequiredWidth = (totalIcons * optimalIconSize) + ((totalIcons - 1) * optimalGap);
+    const needsScrolling = totalRequiredWidth > availableWidth;
+    
     return {
       iconSize: optimalIconSize,
       taskbarHeight: calculatedHeight,
-      gapSize: optimalGap
+      gapSize: optimalGap,
+      needsScrolling
     };
   }, [isMobile, screenWidth]);
 
@@ -181,12 +195,26 @@ export default function MacDock() {
       padding: "8px 12px",
       borderRadius: "0",
       gap: `${gapSize}px`,
-      justifyContent: "space-evenly", // Distribute icons with gaps
+      justifyContent: needsScrolling ? "flex-start" : "space-evenly", // Use flex-start for scrolling
       border: "none",
       borderTop: "1px solid rgba(255, 255, 255, 0.2)",
       boxShadow: "0 -4px 20px rgba(0, 0, 0, 0.3)",
       minHeight: `${taskbarHeight}px`,
       height: `${taskbarHeight}px`,
+      // Add horizontal scrolling when needed
+      ...(needsScrolling && {
+        overflowX: "auto",
+        overflowY: "hidden",
+        scrollbarWidth: "none", // Firefox
+        msOverflowStyle: "none", // IE/Edge
+        "&::-webkit-scrollbar": {
+          display: "none", // Chrome/Safari
+        },
+        // Enable smooth scrolling
+        scrollBehavior: "smooth",
+        // Prevent vertical movement
+        touchAction: "pan-x",
+      }),
     }),
   };
 

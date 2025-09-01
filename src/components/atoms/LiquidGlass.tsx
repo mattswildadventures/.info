@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { ThemeUICSSObject, useThemeUI } from "theme-ui";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import useInBreakpoint from "../../hooks/useInBreakpoint";
 import { ThemeMode } from "../../themes";
 import { liquidGlassConfig, LiquidGlassConfig } from "../../themes/liquidGlass.config";
 
@@ -23,6 +24,7 @@ export default function LiquidGlass({
   const { theme, glassAnimations } = useContext(GlobalContext);
   const { theme: themeUI } = useThemeUI();
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
+  const isMobile = useInBreakpoint(1); // Use 768px breakpoint for consistency
   
   const isLiquidGlass = theme.val === ThemeMode.LiquidGlass;
   
@@ -57,6 +59,17 @@ export default function LiquidGlass({
     position: "relative",
     overflow: "hidden",
     
+    // Mobile-specific adjustments for proper scrolling
+    ...(isMobile && {
+      // Enable flex layout to pass through to children
+      display: "flex",
+      flexDirection: "column",
+      // Allow content to overflow and scroll properly
+      overflow: "visible",
+      // Ensure full height for mobile windows
+      height: "100%",
+    }),
+    
     // Fallback for browsers without backdrop-filter support
     "@supports not (backdrop-filter: blur(1px))": {
       backgroundColor: themeUI.colors?.primary || "rgba(255, 255, 255, 0.9)",
@@ -66,8 +79,11 @@ export default function LiquidGlass({
   // Enhanced glass styles with mouse interaction
   const interactiveGlassStyles: ThemeUICSSObject = animationsEnabled ? {
     ...glassStyles,
-    transform: `perspective(1000px) rotateX(${(mousePosition.y - 50) * 0.1}deg) rotateY(${(mousePosition.x - 50) * 0.1}deg)`,
-    transformStyle: "preserve-3d",
+    // Disable 3D transforms on mobile for better performance and scrolling
+    ...(isMobile ? {} : {
+      transform: `perspective(1000px) rotateX(${(mousePosition.y - 50) * 0.1}deg) rotateY(${(mousePosition.x - 50) * 0.1}deg)`,
+      transformStyle: "preserve-3d",
+    }),
     "&::before": {
       content: '""',
       position: "absolute",
@@ -78,6 +94,10 @@ export default function LiquidGlass({
       background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 255, 255, 0.3) 0%, transparent 50%)`,
       pointerEvents: "none",
       transition: `background ${finalConfig.transitionDuration}s ease`,
+      // On mobile, don't let the pseudo-element interfere with scrolling
+      ...(isMobile && {
+        display: "none",
+      }),
     },
   } : glassStyles;
   
