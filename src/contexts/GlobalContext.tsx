@@ -2,6 +2,13 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState
 import { useLocalStorage } from "react-use";
 import { useColorMode } from "theme-ui";
 import { ThemeMode } from "../themes";
+import { 
+  getDefaultTheme, 
+  getDefaultBackground, 
+  getDefaultReduceMotion, 
+  getDefaultHideTaskbar, 
+  getDefaultGlassAnimations 
+} from "../utils/envDefaults";
 
 type Context<T = boolean> = {
   val: T;
@@ -27,35 +34,35 @@ type GlobalProviderProps = {
 };
 
 export const GlobalContext = createContext<GlobalContextType>({
-  theme: { val: ThemeMode.Flat, set: () => {} },
-  reduceMotion: { val: false, set: () => {} },
-  hideTaskbar: { val: false, set: () => {} },
-  background: { val: BackgroundMode.None, set: () => {} },
-  glassAnimations: { val: true, set: () => {} },
+  theme: { val: getDefaultTheme(), set: () => {} },
+  reduceMotion: { val: getDefaultReduceMotion(), set: () => {} },
+  hideTaskbar: { val: getDefaultHideTaskbar(), set: () => {} },
+  background: { val: getDefaultBackground(), set: () => {} },
+  glassAnimations: { val: getDefaultGlassAnimations(), set: () => {} },
 });
 
 export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element => {
   const [_theme, _setTheme] = useColorMode();
-  const [theme, setTheme] = useState(ThemeMode.Flat);
+  const [theme, setTheme] = useState(getDefaultTheme());
 
   // need these `useState + useEffect` intermediaries to resolve
   // the problem when using localStorage with Next's Static Generation
-  const [_reduceAnim, _setReduceAnim] = useLocalStorage("reduceMotion", false);
-  const [reduceMotion, setReduceAnim] = useState(false);
+  const [_reduceAnim, _setReduceAnim] = useLocalStorage("reduceMotion", getDefaultReduceMotion());
+  const [reduceMotion, setReduceAnim] = useState(getDefaultReduceMotion());
 
-  const [_hideTaskbar, _setHideTaskbar] = useLocalStorage("hideTaskbar", false);
-  const [hideTaskbar, setHideTaskbar] = useState(false);
+  const [_hideTaskbar, _setHideTaskbar] = useLocalStorage("hideTaskbar", getDefaultHideTaskbar());
+  const [hideTaskbar, setHideTaskbar] = useState(getDefaultHideTaskbar());
 
-  const [_background, _setBackground] = useLocalStorage("background", BackgroundMode.None);
-  const [background, setBackground] = useState(BackgroundMode.None);
+  const [_background, _setBackground] = useLocalStorage("background", getDefaultBackground());
+  const [background, setBackground] = useState(getDefaultBackground());
 
-  const [_glassAnimations, _setGlassAnimations] = useLocalStorage("glassAnimations", true);
-  const [glassAnimations, setGlassAnimations] = useState(true);
+  const [_glassAnimations, _setGlassAnimations] = useLocalStorage("glassAnimations", getDefaultGlassAnimations());
+  const [glassAnimations, setGlassAnimations] = useState(getDefaultGlassAnimations());
 
   useEffect(() => {
     // workaround for Theme UI's color mode being default to user preference,
     // which is light/dark, altering that to match site's default
-    setTheme(_theme === "light" || _theme === "dark" ? ThemeMode.Flat : (_theme as ThemeMode));
+    setTheme(_theme === "light" || _theme === "dark" ? getDefaultTheme() : (_theme as ThemeMode));
   }, [_theme]);
   useEffect(() => setReduceAnim(_reduceAnim as boolean), [_reduceAnim]);
   useEffect(() => setHideTaskbar(_hideTaskbar as boolean), [_hideTaskbar]);

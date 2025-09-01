@@ -61,6 +61,67 @@ export default function MacDock() {
     return 1; // Default: 48px
   };
 
+  // Dynamic sizing calculation for mobile taskbar - moved here before style objects
+  const { iconSize, taskbarHeight, gapSize } = useMemo(() => {
+    if (!isMobile) {
+      return { iconSize: 48, taskbarHeight: 80, gapSize: 4 };
+    }
+
+    // Count total icons that will be rendered
+    const navigationCount = 7; // Navigation icons count
+    const socialCount = 1; // Share icon on mobile
+    const settingsCount = 1;
+    const totalIcons = navigationCount + socialCount + settingsCount;
+
+    // Available width calculation
+    const taskbarPadding = 24; // 12px on each side
+    const availableWidth = screenWidth - taskbarPadding;
+    
+    // Calculate optimal icon size
+    const minIconSize = 28; // Reduced minimum size to ensure gaps fit
+    const maxIconSize = 44; // Reduced max size to leave more room for gaps
+    const minGap = 4; // Minimum gap between icons - ensure visible separation
+    const maxGap = 12; // Maximum gap between icons
+    
+    // Try different icon sizes to find the best fit
+    let optimalIconSize = minIconSize; // Start with minimum
+    let optimalGap = minGap; // Start with minimum gap
+    
+    // Calculate what fits with guaranteed minimum gaps
+    for (let iconSize = maxIconSize; iconSize >= minIconSize; iconSize -= 2) {
+      const totalIconsWidth = totalIcons * iconSize;
+      const requiredGapSpace = (totalIcons - 1) * minGap;
+      const totalRequiredWidth = totalIconsWidth + requiredGapSpace;
+      
+      if (totalRequiredWidth <= availableWidth) {
+        // This size fits! Calculate actual gap we can use
+        const remainingWidth = availableWidth - totalIconsWidth;
+        const calculatedGap = remainingWidth / (totalIcons - 1);
+        
+        optimalIconSize = iconSize;
+        optimalGap = Math.min(maxGap, calculatedGap);
+        break;
+      }
+    }
+    
+    // Fallback: if nothing fits with minimum gaps, force minimum size and reduce gaps
+    if (optimalIconSize === minIconSize && optimalGap === minGap) {
+      const totalIconsWidth = totalIcons * minIconSize;
+      const remainingWidth = Math.max(0, availableWidth - totalIconsWidth);
+      optimalGap = Math.max(1, remainingWidth / (totalIcons - 1)); // At least 1px gap
+    }
+    
+    // Calculate taskbar height based on icon size
+    const padding = 16; // 8px top + 8px bottom
+    const calculatedHeight = optimalIconSize + padding;
+    
+    return {
+      iconSize: optimalIconSize,
+      taskbarHeight: calculatedHeight,
+      gapSize: optimalGap
+    };
+  }, [isMobile, screenWidth]);
+
   const dockStyle: ThemeUICSSObject = {
     position: "fixed",
     bottom: "16px",
@@ -373,67 +434,6 @@ export default function MacDock() {
       isNavigationIcon: false,
     },
   ];
-
-  // Dynamic sizing calculation for mobile taskbar
-  const { iconSize, taskbarHeight, gapSize } = useMemo(() => {
-    if (!isMobile) {
-      return { iconSize: 48, taskbarHeight: 80, gapSize: 4 };
-    }
-
-    // Count total icons that will be rendered
-    const navigationCount = navigationIcons.length;
-    const socialCount = 1; // Share icon on mobile
-    const settingsCount = 1;
-    const totalIcons = navigationCount + socialCount + settingsCount;
-
-    // Available width calculation
-    const taskbarPadding = 24; // 12px on each side
-    const availableWidth = screenWidth - taskbarPadding;
-    
-    // Calculate optimal icon size
-    const minIconSize = 28; // Reduced minimum size to ensure gaps fit
-    const maxIconSize = 44; // Reduced max size to leave more room for gaps
-    const minGap = 4; // Minimum gap between icons - ensure visible separation
-    const maxGap = 12; // Maximum gap between icons
-    
-    // Try different icon sizes to find the best fit
-    let optimalIconSize = minIconSize; // Start with minimum
-    let optimalGap = minGap; // Start with minimum gap
-    
-    // Calculate what fits with guaranteed minimum gaps
-    for (let iconSize = maxIconSize; iconSize >= minIconSize; iconSize -= 2) {
-      const totalIconsWidth = totalIcons * iconSize;
-      const requiredGapSpace = (totalIcons - 1) * minGap;
-      const totalRequiredWidth = totalIconsWidth + requiredGapSpace;
-      
-      if (totalRequiredWidth <= availableWidth) {
-        // This size fits! Calculate actual gap we can use
-        const remainingWidth = availableWidth - totalIconsWidth;
-        const calculatedGap = remainingWidth / (totalIcons - 1);
-        
-        optimalIconSize = iconSize;
-        optimalGap = Math.min(maxGap, calculatedGap);
-        break;
-      }
-    }
-    
-    // Fallback: if nothing fits with minimum gaps, force minimum size and reduce gaps
-    if (optimalIconSize === minIconSize && optimalGap === minGap) {
-      const totalIconsWidth = totalIcons * minIconSize;
-      const remainingWidth = Math.max(0, availableWidth - totalIconsWidth);
-      optimalGap = Math.max(1, remainingWidth / (totalIcons - 1)); // At least 1px gap
-    }
-    
-    // Calculate taskbar height based on icon size
-    const padding = 16; // 8px top + 8px bottom
-    const calculatedHeight = optimalIconSize + padding;
-    
-    return {
-      iconSize: optimalIconSize,
-      taskbarHeight: calculatedHeight,
-      gapSize: optimalGap
-    };
-  }, [isMobile, screenWidth, navigationIcons.length]);
 
   // Dock icons configuration (responsive)
   const dockIcons = [

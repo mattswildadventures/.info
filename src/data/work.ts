@@ -83,15 +83,16 @@ const work: Record<string, Job[]> = {
     {
       title: "Minnio",
       timeline: "Sept 2012 - July 2023",
-      description: "A Technology Solution Provider Company",
+      description: "A Technology Solution Partner company",
       remark:
-        "This is the first company I joined after my graduation. I was able to experience a professional working environment and learned from my seniors.",
+        "Building on-top of our 14 years in the Tech Industry and previous experiencing running YesIT as a Managed Service Provider, we've built out a new approach working with businesses regarding their technology. Instead of being positioned purely as an \“outsourced helpdesk\” focused on keeping systems online, Minnio is designed to work more closely with organisations as a strategic partner. Helping align technology with business goals, streamline operations and build solutions that scale with their growth.",
       activities: [
-        "Develop software utilities to support internal users",
-        "Engage in a robust, long-standing system",
-        "Tools used: WebSphere, ClearCase",
+        "Consulting",
+        "Technology Integration",
+        "Operational efficiency",
+        "Offering those same \"Outsouced Helpdesk\" services",
       ],
-      techs: "HTML, Bootstrap, JS, Java, JSP, XML, DB2 JDBC",
+      //techs: "AI, Bootstrap, JS, Java, JSP, XML, DB2 JDBC",
     }
   ],
   "Side Projects": [
@@ -111,10 +112,10 @@ const work: Record<string, Job[]> = {
     },
     {
       title: "Knowledge Engine",
-      timeline: "2019 - present",
-      description: "A platform that captures and connects personal and team knowledge into a living system that gets smarter every day interactions.",
+      timeline: "2025 - present",
+      description: "A platform that captures and connects personal and team knowledge into a living system that expands in context with every day interactions.",
       remark:
-        "This is the biggest side project that I have started with a lot of time and effort invested. At first, it was simply made for me to apply things I have learned, something I would have fun building, but apparently it has some unforeseen potential, as it is surprisingly well-received and gets a lot of positive feedback and encouragement to advance it further. Visit its $1.",
+        "This is the biggest side project that I have started to learn AI tools as well as integration with new AI systems. At first, the original request  it was simply made for me to apply things I have learned, something I would have fun building, but apparently it has some unforeseen potential, as it is surprisingly well-received and gets a lot of positive feedback and encouragement to advance it further. Visit its $1.",
       activities: [
         "Developed MCP + API Gateway to let any client system plug in seamlessly",
         "WIP: Designing Personal and Company Graphs to capture private learnings and shared insights",
