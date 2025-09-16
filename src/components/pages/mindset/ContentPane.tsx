@@ -55,6 +55,7 @@ export default function ContentPane({ title }: ContentPaneProps) {
         p: 4,
         overflow: "auto",
       }}
+      data-scroll-container="mindset"
       key={selectedItem.title}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

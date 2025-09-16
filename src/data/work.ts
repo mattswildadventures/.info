@@ -127,10 +127,10 @@ const work: Record<string, Job[]> = {
     },
     {
       title: "Mentavia",
-      "timeline": "2025 – present",
-      "description": "A mental-toolkit platform that helps you learn how to think so you can make better decisions, solve complex problems, and grow with confidence.",
-      "remark": "This project came after reflection learning about the skills developed while at YesIT which allowed me to understand the power of Mental Models much more. Having a simple name for patterns of thought was a huge eye-opener for the gaps in my own skills. This was built to provide access to those same tools that'll help to develop a powerful toolkit for others.",
-      "activities": [
+      timeline: "2025 – present",
+      description: "A mental-toolkit platform that helps you learn how to think so you can make better decisions, solve complex problems, and grow with confidence.",
+      remark: "This project came after reflection learning about the skills developed while at YesIT which allowed me to understand the power of Mental Models much more. Having a simple name for patterns of thought was a huge eye-opener for the gaps in my own skills. This was built to provide access to those same tools that'll help to develop a powerful toolkit for others.",
+      activities: [
         "Defined the core promise: Work smarter, not harder.",
         "Built Personalized Pathways tailored to goals and cognitive preferences.",
         "Developed Pattern Recognition to reveal thinking habits with actionable insights.",
@@ -144,7 +144,7 @@ const work: Record<string, Job[]> = {
     {
       title: "Braindump",
       timeline: "2025",
-      description: "A simple tool I've built for my own problem.",
+      description: "A simple tool I've built ",
       remark:
         "This has been a simple tool I've built for myself to allow me to take audio recordings of thoughts and allow me to do something with them at a later stage.",
       techs: "HTML, Bootstrap, ReactJS, React-i18n",

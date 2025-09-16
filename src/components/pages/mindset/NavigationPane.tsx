@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRouter } from "next/router";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState, useRef } from "react";
 import { Box, Divider, Flex, Heading, Text } from "theme-ui";
 import { GlobalContext } from "../../../contexts/GlobalContext";
 import useInBreakpoint from "../../../hooks/useInBreakpoint";
@@ -23,6 +23,14 @@ export default function NavigationPane({
   const mainTransition = useReduceMotion({ duration: 0.6 });
   
   const [activeCategory, setActiveCategory] = useState<string>();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollY = useMotionValue(0);
+  
+  // Create rubber band collapse effect - collapses faster than scroll
+  const navHeight = useTransform(scrollY, [0, 100], [300, 60]); // Collapses to compact height quickly
+  const navOpacity = useTransform(scrollY, [0, 80], [1, 0.3]); // Fades out categories
+  const titleScale = useTransform(scrollY, [0, 60], [1, 0.85]); // Shrinks title
+  const contentOpacity = useTransform(scrollY, [0, 40], [1, 0]); // Hides content even faster
 
   // Auto-select first category on load
   useEffect(() => {
@@ -36,6 +44,26 @@ export default function NavigationPane({
       }
     }
   }, [activeCategory, onNavigate]);
+
+  // Scroll listener for rubber band effect (mobile only)
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const handleScroll = () => {
+      const scrollContainer = document.querySelector('[data-scroll-container="mindset"]');
+      if (scrollContainer) {
+        const scrollTop = scrollContainer.scrollTop;
+        // Update motion value - this drives all our transforms
+        scrollY.set(scrollTop);
+      }
+    };
+
+    const scrollContainer = document.querySelector('[data-scroll-container="mindset"]');
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, [isMobile, scrollY]);
 
   const handleCategoryClick = (category: string) => {
     setActiveCategory(category);
@@ -51,106 +79,125 @@ export default function NavigationPane({
 
   return (
     <motion.aside
+      style={{
+        // Apply rubber band transforms on mobile only
+        height: isMobile ? navHeight : undefined,
+        opacity: isMobile ? navOpacity : undefined,
+      }}
       sx={{
         width: ["100%", null, "320px"],
         height: ["auto", null, "100%"],
         borderRight: ["none", null, "1px solid rgba(255, 255, 255, 0.1)"],
         borderBottom: ["1px solid rgba(255, 255, 255, 0.1)", null, "none"],
-        overflow: "auto",
+        overflow: isMobile ? "hidden" : "auto", // Prevent scroll on mobile during collapse
         zIndex: zIndex.window,
         p: 4,
+        position: isMobile ? "sticky" : "static", // Stick to top on mobile
+        top: 0,
       }}
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={mainTransition}
     >
-      <Heading
-        variant="h3"
-        sx={{
-          mb: 4,
-          fontSize: ["18px", null, "20px"],
-          fontWeight: "600",
-          color: "text",
+      <motion.div
+        style={{
+          scale: isMobile ? titleScale : undefined,
         }}
       >
-        My Mindset
-      </Heading>
+        <Heading
+          variant="h3"
+          sx={{
+            mb: 4,
+            fontSize: ["18px", null, "20px"],
+            fontWeight: "600",
+            color: "text",
+          }}
+        >
+          My Mindset
+        </Heading>
+      </motion.div>
 
-      {Object.entries(mindset).map(([category, items]) => (
-        <Fragment key={category}>
-          <Box
-            as="button"
-            onClick={() => handleCategoryClick(category)}
-            sx={{
-              width: "100%",
-              textAlign: "left",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              p: 2,
-              borderRadius: "8px",
-              mb: 2,
-              transition: "all 0.2s ease",
-              backgroundColor: activeCategory === category ? "rgba(255, 255, 255, 0.1)" : "transparent",
-              "&:hover": {
-                backgroundColor: "rgba(255, 255, 255, 0.05)",
-              },
-            }}
-          >
-            <Text
+      <motion.div
+        style={{
+          opacity: isMobile ? contentOpacity : undefined,
+        }}
+      >
+        {Object.entries(mindset).map(([category, items]) => (
+          <Fragment key={category}>
+            <Box
+              as="button"
+              onClick={() => handleCategoryClick(category)}
               sx={{
-                fontSize: "16px",
-                fontWeight: "600",
-                color: "text", // Use consistent text color instead of highlight
-                mb: 1,
+                width: "100%",
+                textAlign: "left",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                p: 2,
+                borderRadius: "8px",
+                mb: 2,
+                transition: "all 0.2s ease",
+                backgroundColor: activeCategory === category ? "rgba(255, 255, 255, 0.1)" : "transparent",
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                },
               }}
             >
-              {category}
-            </Text>
-          </Box>
+              <Text
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  color: "text",
+                  mb: 1,
+                }}
+              >
+                {category}
+              </Text>
+            </Box>
 
-          {/* Show items when category is active */}
-          {activeCategory === category && (
-            <Box sx={{ ml: 3, mb: 3 }}>
-              {items.map((item) => (
-                <Box
-                  key={item.title}
-                  as="button"
-                  onClick={() => handleItemClick(item.title)}
-                  sx={{
-                    width: "100%",
-                    textAlign: "left",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    p: 2,
-                    borderRadius: "6px",
-                    mb: 1,
-                    transition: "all 0.2s ease",
-                    backgroundColor: title === item.title ? "rgba(255, 255, 255, 0.08)" : "transparent",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 0.05)",
-                    },
-                  }}
-                >
-                  <Text
+            {/* Show items when category is active */}
+            {activeCategory === category && (
+              <Box sx={{ ml: 3, mb: 3 }}>
+                {items.map((item) => (
+                  <Box
+                    key={item.title}
+                    as="button"
+                    onClick={() => handleItemClick(item.title)}
                     sx={{
-                      fontSize: "14px",
-                      fontWeight: "500",
-                      color: "text", // Use consistent text color instead of highlight
+                      width: "100%",
+                      textAlign: "left",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      p: 2,
+                      borderRadius: "6px",
                       mb: 1,
+                      transition: "all 0.2s ease",
+                      backgroundColor: title === item.title ? "rgba(255, 255, 255, 0.08)" : "transparent",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 255, 255, 0.05)",
+                      },
                     }}
                   >
-                    {item.title}
-                  </Text>
-                </Box>
-              ))}
-            </Box>
-          )}
+                    <Text
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        color: "text",
+                        mb: 1,
+                      }}
+                    >
+                      {item.title}
+                    </Text>
+                  </Box>
+                ))}
+              </Box>
+            )}
 
-          <Divider sx={{ my: 3, opacity: 0.1 }} />
-        </Fragment>
-      ))}
+            <Divider sx={{ my: 3, opacity: 0.1 }} />
+          </Fragment>
+        ))}
+      </motion.div>
     </motion.aside>
   );
 }
