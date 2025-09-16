@@ -52,7 +52,7 @@ export default function ContentPane({ title }: ContentPaneProps) {
     <motion.main
       sx={{
         flex: 1,
-        p: 4,
+        p: [3, null, 4],
         overflow: "auto",
       }}
       data-scroll-container="mindset"

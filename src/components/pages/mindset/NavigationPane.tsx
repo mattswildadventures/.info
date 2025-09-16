@@ -18,7 +18,7 @@ export default function NavigationPane({
   onNavigate,
 }: NavigationPaneProps) {
   const router = useRouter();
-  const isMobile = useInBreakpoint(0);
+  const isMobile = useInBreakpoint(1); // Use 768px breakpoint for mobile
   const { hideTaskbar } = useContext(GlobalContext);
   const mainTransition = useReduceMotion({ duration: 0.6 });
   
@@ -77,51 +77,40 @@ export default function NavigationPane({
     onNavigate?.(itemTitle);
   };
 
+  // Hide navigation pane on mobile - dropdown will handle navigation
+  if (isMobile) {
+    return null;
+  }
+
   return (
     <motion.aside
-      style={{
-        // Apply rubber band transforms on mobile only
-        height: isMobile ? navHeight : undefined,
-        opacity: isMobile ? navOpacity : undefined,
-      }}
       sx={{
-        width: ["100%", null, "320px"],
-        height: ["auto", null, "100%"],
-        borderRight: ["none", null, "1px solid rgba(255, 255, 255, 0.1)"],
-        borderBottom: ["1px solid rgba(255, 255, 255, 0.1)", null, "none"],
-        overflow: isMobile ? "hidden" : "auto", // Prevent scroll on mobile during collapse
+        width: "320px",
+        height: "100%",
+        borderRight: "1px solid rgba(255, 255, 255, 0.1)",
+        overflow: "auto",
         zIndex: zIndex.window,
         p: 4,
-        position: isMobile ? "sticky" : "static", // Stick to top on mobile
-        top: 0,
       }}
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={mainTransition}
     >
-      <motion.div
-        style={{
-          scale: isMobile ? titleScale : undefined,
-        }}
-      >
+      <div>
         <Heading
           variant="h3"
           sx={{
             mb: 4,
-            fontSize: ["18px", null, "20px"],
+            fontSize: "20px",
             fontWeight: "600",
             color: "text",
           }}
         >
           My Mindset
         </Heading>
-      </motion.div>
+      </div>
 
-      <motion.div
-        style={{
-          opacity: isMobile ? contentOpacity : undefined,
-        }}
-      >
+      <div>
         {Object.entries(mindset).map(([category, items]) => (
           <Fragment key={category}>
             <Box
@@ -197,7 +186,7 @@ export default function NavigationPane({
             <Divider sx={{ my: 3, opacity: 0.1 }} />
           </Fragment>
         ))}
-      </motion.div>
+      </div>
     </motion.aside>
   );
 }
