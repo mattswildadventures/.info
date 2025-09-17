@@ -8,7 +8,8 @@ import {
   getDefaultReduceMotion, 
   getDefaultHideTaskbar, 
   getDefaultGlassAnimations,
-  getDefaultShowExtendedDock
+  getDefaultShowExtendedDockDesktop,
+  getDefaultShowExtendedDockMobile
 } from "../utils/envDefaults";
 
 type Context<T = boolean> = {
@@ -28,7 +29,8 @@ type GlobalContextType = {
   hideTaskbar: Context;
   background: Context<BackgroundMode>;
   glassAnimations: Context;
-  showExtendedDock: Context;
+  showExtendedDockDesktop: Context;
+  showExtendedDockMobile: Context;
 };
 
 type GlobalProviderProps = {
@@ -41,7 +43,8 @@ export const GlobalContext = createContext<GlobalContextType>({
   hideTaskbar: { val: getDefaultHideTaskbar(), set: () => {} },
   background: { val: getDefaultBackground(), set: () => {} },
   glassAnimations: { val: getDefaultGlassAnimations(), set: () => {} },
-  showExtendedDock: { val: getDefaultShowExtendedDock(), set: () => {} },
+  showExtendedDockDesktop: { val: getDefaultShowExtendedDockDesktop(), set: () => {} },
+  showExtendedDockMobile: { val: getDefaultShowExtendedDockMobile(), set: () => {} },
 });
 
 export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element => {
@@ -62,8 +65,11 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
   const [_glassAnimations, _setGlassAnimations] = useLocalStorage("glassAnimations", getDefaultGlassAnimations());
   const [glassAnimations, setGlassAnimations] = useState(getDefaultGlassAnimations());
 
-  const [_showExtendedDock, _setShowExtendedDock] = useLocalStorage("showExtendedDock", getDefaultShowExtendedDock());
-  const [showExtendedDock, setShowExtendedDock] = useState(getDefaultShowExtendedDock());
+  const [_showExtendedDockDesktop, _setShowExtendedDockDesktop] = useLocalStorage("showExtendedDockDesktop", getDefaultShowExtendedDockDesktop());
+  const [showExtendedDockDesktop, setShowExtendedDockDesktop] = useState(getDefaultShowExtendedDockDesktop());
+
+  const [_showExtendedDockMobile, _setShowExtendedDockMobile] = useLocalStorage("showExtendedDockMobile", getDefaultShowExtendedDockMobile());
+  const [showExtendedDockMobile, setShowExtendedDockMobile] = useState(getDefaultShowExtendedDockMobile());
 
   useEffect(() => {
     // workaround for Theme UI's color mode being default to user preference,
@@ -74,7 +80,8 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
   useEffect(() => setHideTaskbar(_hideTaskbar as boolean), [_hideTaskbar]);
   useEffect(() => setBackground(_background as BackgroundMode), [_background]);
   useEffect(() => setGlassAnimations(_glassAnimations as boolean), [_glassAnimations]);
-  useEffect(() => setShowExtendedDock(_showExtendedDock as boolean), [_showExtendedDock]);
+  useEffect(() => setShowExtendedDockDesktop(_showExtendedDockDesktop as boolean), [_showExtendedDockDesktop]);
+  useEffect(() => setShowExtendedDockMobile(_showExtendedDockMobile as boolean), [_showExtendedDockMobile]);
 
   const context: GlobalContextType = {
     theme: {
@@ -97,9 +104,13 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
       val: glassAnimations,
       set: _setGlassAnimations as Dispatch<SetStateAction<boolean>>,
     },
-    showExtendedDock: {
-      val: showExtendedDock,
-      set: _setShowExtendedDock as Dispatch<SetStateAction<boolean>>,
+    showExtendedDockDesktop: {
+      val: showExtendedDockDesktop,
+      set: _setShowExtendedDockDesktop as Dispatch<SetStateAction<boolean>>,
+    },
+    showExtendedDockMobile: {
+      val: showExtendedDockMobile,
+      set: _setShowExtendedDockMobile as Dispatch<SetStateAction<boolean>>,
     },
   };
 

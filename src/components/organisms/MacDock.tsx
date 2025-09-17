@@ -10,13 +10,19 @@ import useDimensions from "../../hooks/useDimentions";
 import { getRoute } from "../../misc/routes";
 import { ThemeMode } from "../../themes";
 import { zIndex } from "../../themes/common";
+import { 
+  getDefaultDockSpacingMode, 
+  getDefaultDockSpacingExtended, 
+  getDefaultDockSpacingCompact,
+  getDefaultDockGapSize 
+} from "../../utils/envDefaults";
 import DockIcon from "../atoms/dock/DockIcon";
 import ReactIcon from "../atoms/IconReact";
 import PanelConfig from "../molecules/PanelConfig";
 
 export default function MacDock() {
   const router = useRouter();
-  const { hideTaskbar, showExtendedDock } = useContext(GlobalContext);
+  const { hideTaskbar, showExtendedDockDesktop, showExtendedDockMobile } = useContext(GlobalContext);
   const [isConfigActive, setIsConfigActive] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [configPanel, setConfigPanel] = useState(false);
@@ -32,6 +38,11 @@ export default function MacDock() {
   const route = getRoute(router.asPath);
   const isHomePage = router.asPath === "/";
   
+  // Dock spacing configuration from environment
+  const dockSpacingMode = getDefaultDockSpacingMode();
+  const dockSpacingExtended = getDefaultDockSpacingExtended();
+  const dockSpacingCompact = getDefaultDockSpacingCompact();
+  const dockGapSize = getDefaultDockGapSize();
 
   // Move hook calls outside conditional usage
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
@@ -62,6 +73,36 @@ export default function MacDock() {
     return 1; // Default: 48px
   };
 
+  // Get the appropriate extended dock setting based on current platform
+  const getShowExtendedDock = (): boolean => {
+    return isMobile ? showExtendedDockMobile.val : showExtendedDockDesktop.val;
+  };
+
+  // Calculate dock justification based on spacing configuration
+  const getDockJustification = (): string => {
+    if (!isMobile) {
+      return 'center'; // Desktop always uses center alignment
+    }
+
+    // Mobile spacing logic based on configuration
+    switch (dockSpacingMode) {
+      case 'adaptive':
+        // Smart mode: use different spacing based on extended dock state
+        return getShowExtendedDock() ? dockSpacingExtended : dockSpacingCompact;
+      
+      case 'space-evenly':
+      case 'center': 
+      case 'space-between':
+      case 'space-around':
+        // Fixed spacing mode
+        return dockSpacingMode;
+      
+      default:
+        // Fallback to adaptive behavior
+        return getShowExtendedDock() ? 'space-evenly' : 'center';
+    }
+  };
+
   // Dynamic sizing calculation for mobile taskbar - moved here before style objects
   const { iconSize, taskbarHeight, gapSize, needsScrolling } = useMemo(() => {
     if (!isMobile) {
@@ -70,7 +111,7 @@ export default function MacDock() {
 
     // Count total icons that will be rendered
     const coreNavigationCount = 1; // Home icon
-    const extendedNavigationCount = showExtendedDock.val ? 6 : 0; // Extended navigation icons
+    const extendedNavigationCount = getShowExtendedDock() ? 6 : 0; // Extended navigation icons based on platform
     const socialCount = 1; // Share icon on mobile
     const settingsCount = 1;
     const totalIcons = coreNavigationCount + extendedNavigationCount + socialCount + settingsCount;
@@ -135,7 +176,7 @@ export default function MacDock() {
       gapSize: optimalGap,
       needsScrolling
     };
-  }, [isMobile, screenWidth, showExtendedDock.val]);
+  }, [isMobile, screenWidth, showExtendedDockDesktop.val, showExtendedDockMobile.val]);
 
   const dockStyle: ThemeUICSSObject = {
     position: "fixed",
@@ -158,7 +199,7 @@ export default function MacDock() {
   const dockInnerStyle: ThemeUICSSObject = {
     display: "flex",
     alignItems: "end",
-    gap: "4px",
+    gap: `${dockGapSize}px`,
     pointerEvents: "auto", // Re-enable pointer events for the actual dock
     padding: "8px",
     borderRadius: "20px",
@@ -196,7 +237,7 @@ export default function MacDock() {
       padding: "8px 12px",
       borderRadius: "0",
       gap: `${gapSize}px`,
-      justifyContent: needsScrolling ? "flex-start" : "space-evenly", // Use flex-start for scrolling
+      justifyContent: needsScrolling ? "flex-start" : getDockJustification(), // Use configured spacing
       border: "none",
       borderTop: "1px solid rgba(255, 255, 255, 0.2)",
       boxShadow: "0 -4px 20px rgba(0, 0, 0, 0.3)",
@@ -427,10 +468,10 @@ export default function MacDock() {
     },
   ];
 
-  // Combine navigation icons based on toggle state
+  // Combine navigation icons based on platform-specific toggle state
   const navigationIcons = [
     ...coreNavigationIcons,
-    ...(showExtendedDock.val ? extendedNavigationIcons : [])
+    ...(getShowExtendedDock() ? extendedNavigationIcons : [])
   ];
 
   // Desktop social media icons

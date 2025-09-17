@@ -4,6 +4,7 @@ import { ForwardedRef, forwardRef, useContext } from "react";
 import { ThemeUICSSObject } from "theme-ui";
 import { GlobalContext, BackgroundMode } from "../../contexts/GlobalContext";
 import useMatchTheme from "../../hooks/useMatchTheme";
+import useInBreakpoint from "../../hooks/useInBreakpoint";
 import useReduceMotion from "../../hooks/useReduceMotion";
 import useTaskbarHeight from "../../hooks/useTaskbarHeight";
 import { sizes, ThemeMode } from "../../themes";
@@ -17,13 +18,17 @@ type PanelConfigProps = {
 };
 
 const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElement>) => {
-  const { reduceMotion, hideTaskbar, background, glassAnimations, showExtendedDock } = useContext(GlobalContext);
+  const { reduceMotion, hideTaskbar, background, glassAnimations, showExtendedDockDesktop, showExtendedDockMobile } = useContext(GlobalContext);
   
   // Move hook calls outside conditional usage
+  const isMobile = useInBreakpoint(1);
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
   const isClassicTheme = useMatchTheme(ThemeMode.Classic);
   const isTronTheme = useMatchTheme(ThemeMode.Tron);
   const isLiquidGlassTheme = useMatchTheme(ThemeMode.LiquidGlass);
+
+  // Get the appropriate extended dock setting and setter based on current platform
+  const currentShowExtendedDock = isMobile ? showExtendedDockMobile : showExtendedDockDesktop;
 
   const panelConfigStyle: ThemeUICSSObject = {
     p: 4,
@@ -112,9 +117,9 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
       />
       <Toggle
         id="toggle-showExtendedDock"
-        label="Show extended dock"
-        isChecked={showExtendedDock.val}
-        onChange={() => showExtendedDock.set(!showExtendedDock.val)}
+        label={`Show extended dock (${isMobile ? 'Mobile' : 'Desktop'})`}
+        isChecked={currentShowExtendedDock.val}
+        onChange={() => currentShowExtendedDock.set(!currentShowExtendedDock.val)}
         style={{ mb: 3 }}
       />
       
