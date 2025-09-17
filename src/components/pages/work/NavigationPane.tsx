@@ -3,6 +3,7 @@ import work from "../../../data/work";
 import { List } from "../../atoms/Container";
 import NavigationPaneItem from "../../atoms/NavigationPaneItem";
 import { H3 } from "../../atoms/Typography";
+import useInBreakpoint from "../../../hooks/useInBreakpoint";
 
 type NavigationPaneProps = {
   title?: string;
@@ -10,6 +11,13 @@ type NavigationPaneProps = {
 };
 
 export default function NavigationPane({ title, onNavigate }: NavigationPaneProps) {
+  const isMobile = useInBreakpoint(1); // Use 768px breakpoint for mobile
+
+  // Hide navigation pane on mobile (mobile dropdown is used instead)
+  if (isMobile) {
+    return null;
+  }
+
   return (
     <div sx={{ minWidth: 200 }}>
       {Object.keys(work).map((category, i) => (
