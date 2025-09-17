@@ -16,7 +16,7 @@ import PanelConfig from "../molecules/PanelConfig";
 
 export default function MacDock() {
   const router = useRouter();
-  const { hideTaskbar } = useContext(GlobalContext);
+  const { hideTaskbar, showExtendedDock } = useContext(GlobalContext);
   const [isConfigActive, setIsConfigActive] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [configPanel, setConfigPanel] = useState(false);
@@ -69,10 +69,11 @@ export default function MacDock() {
     }
 
     // Count total icons that will be rendered
-    const navigationCount = 7; // Navigation icons count
+    const coreNavigationCount = 1; // Home icon
+    const extendedNavigationCount = showExtendedDock.val ? 6 : 0; // Extended navigation icons
     const socialCount = 1; // Share icon on mobile
     const settingsCount = 1;
-    const totalIcons = navigationCount + socialCount + settingsCount;
+    const totalIcons = coreNavigationCount + extendedNavigationCount + socialCount + settingsCount;
 
     // Available width calculation - account for iPhone safe area
     const taskbarPadding = 20; // Reduced padding for better fit
@@ -134,7 +135,7 @@ export default function MacDock() {
       gapSize: optimalGap,
       needsScrolling
     };
-  }, [isMobile, screenWidth]);
+  }, [isMobile, screenWidth, showExtendedDock.val]);
 
   const dockStyle: ThemeUICSSObject = {
     position: "fixed",
@@ -356,8 +357,8 @@ export default function MacDock() {
     </AnimatePresence>
   );
 
-  // Base navigation icons
-  const navigationIcons = [
+  // Base navigation icons - split into core and extended
+  const coreNavigationIcons = [
     {
       iconName: undefined,
       customIcon: <HomeIcon />,
@@ -367,6 +368,9 @@ export default function MacDock() {
       isActive: isHomePage,
       isNavigationIcon: true,
     },
+  ];
+
+  const extendedNavigationIcons = [
     {
       iconName: "FlatAbout" as const,
       customIcon: undefined,
@@ -421,6 +425,12 @@ export default function MacDock() {
       isActive: router.asPath === "/roadmap",
       isNavigationIcon: true,
     },
+  ];
+
+  // Combine navigation icons based on toggle state
+  const navigationIcons = [
+    ...coreNavigationIcons,
+    ...(showExtendedDock.val ? extendedNavigationIcons : [])
   ];
 
   // Desktop social media icons

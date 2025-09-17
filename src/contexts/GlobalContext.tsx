@@ -7,7 +7,8 @@ import {
   getDefaultBackground, 
   getDefaultReduceMotion, 
   getDefaultHideTaskbar, 
-  getDefaultGlassAnimations 
+  getDefaultGlassAnimations,
+  getDefaultShowExtendedDock
 } from "../utils/envDefaults";
 
 type Context<T = boolean> = {
@@ -27,6 +28,7 @@ type GlobalContextType = {
   hideTaskbar: Context;
   background: Context<BackgroundMode>;
   glassAnimations: Context;
+  showExtendedDock: Context;
 };
 
 type GlobalProviderProps = {
@@ -39,6 +41,7 @@ export const GlobalContext = createContext<GlobalContextType>({
   hideTaskbar: { val: getDefaultHideTaskbar(), set: () => {} },
   background: { val: getDefaultBackground(), set: () => {} },
   glassAnimations: { val: getDefaultGlassAnimations(), set: () => {} },
+  showExtendedDock: { val: getDefaultShowExtendedDock(), set: () => {} },
 });
 
 export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element => {
@@ -59,6 +62,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
   const [_glassAnimations, _setGlassAnimations] = useLocalStorage("glassAnimations", getDefaultGlassAnimations());
   const [glassAnimations, setGlassAnimations] = useState(getDefaultGlassAnimations());
 
+  const [_showExtendedDock, _setShowExtendedDock] = useLocalStorage("showExtendedDock", getDefaultShowExtendedDock());
+  const [showExtendedDock, setShowExtendedDock] = useState(getDefaultShowExtendedDock());
+
   useEffect(() => {
     // workaround for Theme UI's color mode being default to user preference,
     // which is light/dark, altering that to match site's default
@@ -68,6 +74,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
   useEffect(() => setHideTaskbar(_hideTaskbar as boolean), [_hideTaskbar]);
   useEffect(() => setBackground(_background as BackgroundMode), [_background]);
   useEffect(() => setGlassAnimations(_glassAnimations as boolean), [_glassAnimations]);
+  useEffect(() => setShowExtendedDock(_showExtendedDock as boolean), [_showExtendedDock]);
 
   const context: GlobalContextType = {
     theme: {
@@ -89,6 +96,10 @@ export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element =
     glassAnimations: {
       val: glassAnimations,
       set: _setGlassAnimations as Dispatch<SetStateAction<boolean>>,
+    },
+    showExtendedDock: {
+      val: showExtendedDock,
+      set: _setShowExtendedDock as Dispatch<SetStateAction<boolean>>,
     },
   };
 

@@ -86,6 +86,21 @@ export function getDefaultGlassAnimations(): boolean {
   return true;
 }
 
+export function getDefaultShowExtendedDock(): boolean {
+  const envValue = process.env.NEXT_PUBLIC_DEFAULT_SHOW_EXTENDED_DOCK?.toLowerCase();
+  
+  // Parse boolean values
+  if (envValue === 'true' || envValue === '1') {
+    return true;
+  }
+  if (envValue === 'false' || envValue === '0') {
+    return false;
+  }
+  
+  // Fallback to false if invalid or missing (extended dock hidden by default)
+  return false;
+}
+
 /**
  * Get all default settings as an object for easy access
  */
@@ -96,5 +111,6 @@ export function getAllDefaults() {
     reduceMotion: getDefaultReduceMotion(),
     hideTaskbar: getDefaultHideTaskbar(),
     glassAnimations: getDefaultGlassAnimations(),
+    showExtendedDock: getDefaultShowExtendedDock(),
   };
 }

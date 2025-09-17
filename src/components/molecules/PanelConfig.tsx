@@ -17,7 +17,7 @@ type PanelConfigProps = {
 };
 
 const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElement>) => {
-  const { reduceMotion, hideTaskbar, background, glassAnimations } = useContext(GlobalContext);
+  const { reduceMotion, hideTaskbar, background, glassAnimations, showExtendedDock } = useContext(GlobalContext);
   
   // Move hook calls outside conditional usage
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
@@ -108,6 +108,13 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
         label="Hide taskbar"
         isChecked={hideTaskbar.val}
         onChange={() => hideTaskbar.set(!hideTaskbar.val)}
+        style={{ mb: 3 }}
+      />
+      <Toggle
+        id="toggle-showExtendedDock"
+        label="Show extended dock"
+        isChecked={showExtendedDock.val}
+        onChange={() => showExtendedDock.set(!showExtendedDock.val)}
         style={{ mb: 3 }}
       />
       
