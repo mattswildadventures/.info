@@ -23,6 +23,26 @@ export default function ContentPane({ title }: ContentPaneProps) {
           backgroundColor: "rgba(44, 62, 80, 0.1)", // Light version of primary
           color: "#2c3e50" // Dark text for contrast
         };
+      case ThemeMode.Soft:
+        return {
+          backgroundColor: "rgba(35, 34, 70, 0.1)", // Light version of soft text
+          color: "#232246" // Dark text matching theme
+        };
+      case ThemeMode.Classic:
+        return {
+          backgroundColor: "rgba(0, 0, 0, 0.1)", // Light version 
+          color: "#000" // Dark text matching theme
+        };
+      case ThemeMode.Tron:
+        return {
+          backgroundColor: "rgba(255, 255, 255, 0.1)", // Light background
+          color: "#fff" // Light text matching theme
+        };
+      case ThemeMode.LiquidGlass:
+        return {
+          backgroundColor: "rgba(0, 0, 0, 0.1)", // Light dark background
+          color: "#000" // Dark text matching theme
+        };
       default:
         return {
           backgroundColor: "rgba(255, 255, 255, 0.1)",
