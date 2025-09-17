@@ -18,7 +18,7 @@ export default function NavigationPane({
   onNavigate,
 }: NavigationPaneProps) {
   const router = useRouter();
-  const isMobile = useInBreakpoint(0);
+  const isMobile = useInBreakpoint(1); // Use 768px breakpoint for mobile
   const { hideTaskbar } = useContext(GlobalContext);
   const mainTransition = useReduceMotion({ duration: 0.6 });
   
@@ -48,6 +48,11 @@ export default function NavigationPane({
   const handleItemClick = (itemTitle: string) => {
     onNavigate?.(itemTitle);
   };
+
+  // Hide navigation pane on mobile (mobile dropdown is used instead)
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <motion.aside
