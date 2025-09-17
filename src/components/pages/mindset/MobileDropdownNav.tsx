@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Box, Button, Text } from "theme-ui";
+import { GlobalContext } from "../../../contexts/GlobalContext";
+import { ThemeMode } from "../../../themes";
 import useReduceMotion from "../../../hooks/useReduceMotion";
 import mindset from "../../../data/mindset";
 
@@ -16,6 +18,8 @@ export default function MobileDropdownNav({
   const [isOpen, setIsOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { theme } = useContext(GlobalContext);
+  const isDarkTheme = theme.val === ThemeMode.Tron;
   const mainTransition = useReduceMotion({ duration: 0.2 });
 
   // Find current category based on selected title
@@ -94,15 +98,16 @@ export default function MobileDropdownNav({
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Box>
+          <Box sx={{ flex: 1, pr: 2 }}>
             <Text
               sx={{
                 fontSize: "13px",
-                color: "rgba(255, 255, 255, 0.6)",
+                color: "muted",
                 fontWeight: "500",
                 textTransform: "uppercase",
                 letterSpacing: "0.5px",
-                mb: "4px",
+                mb: "8px",
+                display: "block",
               }}
             >
               {currentCategory || "Select Category"}
@@ -113,6 +118,7 @@ export default function MobileDropdownNav({
                 fontWeight: "600",
                 color: "text",
                 lineHeight: 1.3,
+                display: "block",
               }}
             >
               {currentItem?.title || "Select Item"}
@@ -123,7 +129,7 @@ export default function MobileDropdownNav({
               transform: `rotate(${isOpen ? "180deg" : "0deg"})`,
               transition: "transform 0.3s ease",
               fontSize: "14px",
-              color: "rgba(255, 255, 255, 0.5)",
+              color: "muted",
               ml: 2,
             }}
           >
@@ -144,29 +150,29 @@ export default function MobileDropdownNav({
             left: 0,
             right: 0,
             zIndex: 1000,
-            backgroundColor: "rgba(255, 255, 255, 0.95)",
+            backgroundColor: isDarkTheme ? "rgba(0, 29, 35, 0.95)" : "rgba(255, 255, 255, 0.95)",
             backdropFilter: "blur(20px)",
-            border: "1px solid rgba(0, 0, 0, 0.1)",
+            border: isDarkTheme ? "1px solid rgba(255, 255, 255, 0.2)" : "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: "12px",
             mt: "8px",
             maxHeight: "70vh",
             overflow: "auto",
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+            boxShadow: isDarkTheme ? "0 8px 32px rgba(0, 0, 0, 0.6)" : "0 8px 32px rgba(0, 0, 0, 0.3)",
           }}
         >
           {Object.entries(mindset).map(([category, items], categoryIndex) => (
             <Box key={category}>
               <Box
                 sx={{
-                  backgroundColor: "rgba(0, 0, 0, 0.05)",
-                  borderBottom: "1px solid rgba(0, 0, 0, 0.08)",
+                  backgroundColor: isDarkTheme ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.05)",
+                  borderBottom: isDarkTheme ? "1px solid rgba(255, 255, 255, 0.15)" : "1px solid rgba(0, 0, 0, 0.08)",
                 }}
               >
                 <Text
                   sx={{
                     fontSize: "11px",
                     fontWeight: "700",
-                    color: "rgba(0, 0, 0, 0.6)",
+                    color: "muted",
                     textTransform: "uppercase",
                     letterSpacing: "0.8px",
                     p: "12px 20px 8px",
@@ -190,11 +196,13 @@ export default function MobileDropdownNav({
                     backgroundColor: title === item.title 
                       ? "rgba(59, 130, 246, 0.15)" 
                       : "transparent",
-                    borderBottom: itemIndex < items.length - 1 ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
+                    borderBottom: itemIndex < items.length - 1 
+                      ? isDarkTheme ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(0, 0, 0, 0.05)"
+                      : "none",
                     "&:hover": {
                       backgroundColor: title === item.title 
                         ? "rgba(59, 130, 246, 0.2)" 
-                        : "rgba(0, 0, 0, 0.05)",
+                        : isDarkTheme ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.05)",
                     },
                   }}
                 >
@@ -202,7 +210,7 @@ export default function MobileDropdownNav({
                     sx={{
                       fontSize: "14px",
                       fontWeight: title === item.title ? "600" : "500",
-                      color: title === item.title ? "rgba(59, 130, 246, 1)" : "rgba(0, 0, 0, 0.8)",
+                      color: title === item.title ? "rgba(59, 130, 246, 1)" : "text",
                       lineHeight: 1.4,
                     }}
                   >
@@ -211,7 +219,10 @@ export default function MobileDropdownNav({
                 </Button>
               ))}
               {categoryIndex < Object.entries(mindset).length - 1 && (
-                <Box sx={{ height: "1px", backgroundColor: "rgba(0, 0, 0, 0.1)" }} />
+                <Box sx={{ 
+                  height: "1px", 
+                  backgroundColor: isDarkTheme ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.1)" 
+                }} />
               )}
             </Box>
           ))}
@@ -229,7 +240,7 @@ export default function MobileDropdownNav({
             right: 0,
             bottom: 0,
             zIndex: 999,
-            backgroundColor: "rgba(0, 0, 0, 0.1)",
+            backgroundColor: isDarkTheme ? "rgba(0, 0, 0, 0.3)" : "rgba(0, 0, 0, 0.1)",
           }}
         />
       )}

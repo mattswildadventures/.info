@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useMemo, useContext } from "react";
 import { Box, Heading, Text, Badge, Flex } from "theme-ui";
+import { GlobalContext } from "../../../contexts/GlobalContext";
+import { ThemeMode } from "../../../themes";
 import useReduceMotion from "../../../hooks/useReduceMotion";
 import mindset from "../../../data/mindset";
 
@@ -9,7 +11,25 @@ type ContentPaneProps = {
 };
 
 export default function ContentPane({ title }: ContentPaneProps) {
+  const { theme } = useContext(GlobalContext);
+  const currentTheme = theme.val;
   const mainTransition = useReduceMotion({ duration: 0.6 });
+
+  // Theme-specific badge colors
+  const getBadgeColors = () => {
+    switch (currentTheme) {
+      case ThemeMode.Flat: // Default theme
+        return {
+          backgroundColor: "rgba(44, 62, 80, 0.1)", // Light version of primary
+          color: "#2c3e50" // Dark text for contrast
+        };
+      default:
+        return {
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          color: "rgba(255, 255, 255, 0.8)"
+        };
+    }
+  };
 
   const selectedItem = useMemo(() => {
     if (!title) return null;
@@ -77,8 +97,7 @@ export default function ContentPane({ title }: ContentPaneProps) {
             </Heading>
             <Badge
               sx={{
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-                color: "rgba(255, 255, 255, 0.8)",
+                ...getBadgeColors(),
                 fontSize: "12px",
                 fontWeight: "500",
                 px: 2,
