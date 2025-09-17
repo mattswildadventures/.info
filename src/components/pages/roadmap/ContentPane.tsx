@@ -103,21 +103,31 @@ export default function ContentPane({ title }: ContentPaneProps) {
         {/* Remark */}
         {selectedItem.remark && (
           <Box sx={{ mb: 4 }}>
-            <Text
+            <Flex
               sx={{
-                fontSize: "15px",
-                color: "muted",
-                lineHeight: 1.7,
-                fontStyle: "italic",
-                p: 3,
-                borderLeft: "3px solid",
-                borderColor: "primary",
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 borderRadius: "0 8px 8px 0",
               }}
             >
-              {selectedItem.remark}
-            </Text>
+              <Box
+                sx={{
+                  width: "3px",
+                  backgroundColor: "primary",
+                  flexShrink: 0,
+                }}
+              />
+              <Text
+                sx={{
+                  fontSize: "15px",
+                  color: "muted",
+                  lineHeight: 1.7,
+                  fontStyle: "italic",
+                  p: 3,
+                }}
+              >
+                {selectedItem.remark}
+              </Text>
+            </Flex>
           </Box>
         )}
 
