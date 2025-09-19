@@ -45,6 +45,7 @@ export default function Window({ title, children, help }: WindowProps) {
   const isClassicTheme = useMatchTheme(ThemeMode.Classic);
   const isTronTheme = useMatchTheme(ThemeMode.Tron);
   const isLiquidGlassTheme = useMatchTheme(ThemeMode.LiquidGlass);
+  const isCyberpunkTheme = useMatchTheme(ThemeMode.Cyberpunk);
 
   const style: ThemeUICSSObject = {
     maxWidth: w,
@@ -89,8 +90,14 @@ export default function Window({ title, children, help }: WindowProps) {
       boxShadow: "none",
     }),
 
+    ...(isCyberpunkTheme && {
+      bg: "primary",
+      border: "1px solid var(--theme-ui-colors-highlight)",
+      boxShadow: "0 0 20px rgba(255, 0, 128, 0.6), 0 0 40px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(255, 0, 128, 0.1)",
+    }),
+
     // Default theme (Flat)
-    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && !isLiquidGlassTheme && {
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && !isLiquidGlassTheme && !isCyberpunkTheme && {
       boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)",
     }),
   };
