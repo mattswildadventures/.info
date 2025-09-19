@@ -10,6 +10,7 @@ export enum ThemeMode {
   Tron = "tron",
   Classic = "classic",
   LiquidGlass = "liquidglass",
+  Cyberpunk = "cyberpunk",
 }
 
 const theme: Theme = {
@@ -86,6 +87,21 @@ const theme: Theme = {
         white: "rgba(255, 255, 255, 0.9)",
         red: "rgba(239, 68, 68, 0.8)",
         green: "rgba(16, 185, 129, 0.8)",
+      },
+
+      cyberpunk: {
+        background: "#0a0a0f",
+        primary: "#1a0a1f",
+        secondary: "#2a1a2f",
+        highlight: "#00ffff",
+        shadow: "#ff0080",
+        text: "#ffffff",
+        textReverse: "#00ffff",
+        muted: "rgba(255, 255, 255, 0.7)",
+        mutedReverse: "rgba(0, 255, 255, 0.8)",
+        white: "#ffffff",
+        red: "#ff0080",
+        green: "#00ff80",
       },
     },
   },

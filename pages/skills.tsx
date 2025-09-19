@@ -58,14 +58,15 @@ export default function Skills(): JSX.Element {
 
   return (
     <Window title={getRoute(asPath)?.title} help={helpText}>
-      <Box sx={categoryStyle}>
+      <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <Box sx={categoryStyle}>
         {categories.map((category) => (
           <CategoryButton key={category} onClick={handleClick(category)} isActive={filters.includes(category)}>
             {category}
           </CategoryButton>
         ))}
       </Box>
-      <Box sx={{ py: 4, px: [null, null, 6], minHeight: 400 }}>
+      <Box sx={{ py: 4, px: [null, null, 6], minHeight: 400, flex: 1 }}>
         <List sx={listStyle}>
           {filteredSkills.map((skill) => (
             <motion.li layout={!reduceMotion.val} key={skill.name}>
@@ -73,6 +74,7 @@ export default function Skills(): JSX.Element {
             </motion.li>
           ))}
         </List>
+      </Box>
       </Box>
     </Window>
   );

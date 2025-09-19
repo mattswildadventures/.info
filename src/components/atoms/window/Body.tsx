@@ -31,8 +31,7 @@ export default function WindowBody({ children }: WindowBodyProps) {
       // Add bottom padding to prevent content from going behind dock
       paddingBottom: `${taskbarHeight + 16}px`,
       // Ensure content doesn't exceed viewport
-      maxHeight: "calc(100vh - 120px)", // Conservative fallback
-      maxHeight: "calc(100dvh - 120px)", // Modern browsers
+      maxHeight: "calc(100dvh - 120px)", // Modern browsers with fallback
     }),
 
     ...(!useMatchTheme(ThemeMode.Flat) && { bg: "background" }),

@@ -25,8 +25,7 @@ export default function Desktop({ children }: DesktopProps) {
     transition: "height 0.6s",
     // Ensure mobile doesn't overflow
     ...(isMobile && {
-      maxHeight: `calc(100vh - ${taskbarHeight}px)`,
-      maxHeight: `calc(100dvh - ${taskbarHeight}px)`, // Modern browsers
+      maxHeight: `calc(100dvh - ${taskbarHeight}px)`, // Modern browsers with fallback
     }),
   };
 

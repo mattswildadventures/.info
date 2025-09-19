@@ -26,6 +26,7 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
   const isClassicTheme = useMatchTheme(ThemeMode.Classic);
   const isTronTheme = useMatchTheme(ThemeMode.Tron);
   const isLiquidGlassTheme = useMatchTheme(ThemeMode.LiquidGlass);
+  const isCyberpunkTheme = useMatchTheme(ThemeMode.Cyberpunk);
 
   // Get the appropriate extended dock setting and setter based on current platform
   const currentShowExtendedDock = isMobile ? showExtendedDockMobile : showExtendedDockDesktop;
@@ -64,8 +65,14 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
       boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
     }),
 
+    ...(isCyberpunkTheme && {
+      bg: "primary",
+      border: "1px solid var(--theme-ui-colors-highlight)",
+      boxShadow: "0 4px 20px rgba(255, 0, 128, 0.3), 0 0 0 1px var(--theme-ui-colors-highlight), 0 0 10px rgba(0, 255, 255, 0.2)",
+    }),
+
     // Default theme (Flat) with Mac-style shadow
-    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && !isLiquidGlassTheme && {
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && !isLiquidGlassTheme && !isCyberpunkTheme && {
       boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)",
     }),
   };
@@ -97,8 +104,11 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
         <li>
           <ThemeButton theme={ThemeMode.Classic} />
         </li>
-        <li sx={{ gridColumn: "1 / -1" }}>
+        <li>
           <ThemeButton theme={ThemeMode.LiquidGlass} />
+        </li>
+        <li>
+          <ThemeButton theme={ThemeMode.Cyberpunk} />
         </li>
       </List>
       <Toggle
