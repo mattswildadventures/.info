@@ -68,7 +68,8 @@ const PanelConfig = ({ isVisible }: PanelConfigProps, ref: ForwardedRef<HTMLElem
     ...(isCyberpunkTheme && {
       bg: "primary",
       border: "1px solid var(--theme-ui-colors-highlight)",
-      boxShadow: "0 4px 20px rgba(255, 0, 128, 0.3), 0 0 0 1px var(--theme-ui-colors-highlight), 0 0 10px rgba(0, 255, 255, 0.2)",
+      boxShadow: "0 0 20px rgba(255, 0, 128, 0.6), 0 0 40px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(255, 0, 128, 0.1)",
+      color: "highlight",
     }),
 
     // Default theme (Flat) with Mac-style shadow
