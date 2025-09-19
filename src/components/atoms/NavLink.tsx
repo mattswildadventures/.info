@@ -53,6 +53,7 @@ export default function NavLink({ data }: NavLinkProps) {
   const isClassicTheme = useMatchTheme(ThemeMode.Classic);
   const isTronTheme = useMatchTheme(ThemeMode.Tron);
   const isLiquidGlassTheme = useMatchTheme(ThemeMode.LiquidGlass);
+  const isCyberpunkTheme = useMatchTheme(ThemeMode.Cyberpunk);
   const backgroundLuminance = useBackgroundLuminance();
 
   const linkVariants: Variants = {
@@ -135,8 +136,15 @@ export default function NavLink({ data }: NavLinkProps) {
       transition: "color 0.3s ease, text-shadow 0.3s ease, background-color 0.3s ease",
     }),
 
+    ...(isCyberpunkTheme && {
+      bg: "primary",
+      color: "highlight",
+      border: "1px solid var(--theme-ui-colors-highlight)",
+      boxShadow: "0 0 15px rgba(255, 0, 128, 0.5), 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(255, 0, 128, 0.1)",
+    }),
+
     // Default theme (Flat) with Mac-style shadow
-    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && !isLiquidGlassTheme && {
+    ...(!isSoftTheme && !isClassicTheme && !isTronTheme && !isLiquidGlassTheme && !isCyberpunkTheme && {
       boxShadow: "0 2px 10px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)",
     }),
   };
@@ -156,6 +164,11 @@ export default function NavLink({ data }: NavLinkProps) {
     ...(useMatchTheme(ThemeMode.Tron) && {
       bg: "red",
       boxShadow: (theme) => `0 0 0 1.5px ${theme.colors?.shadow}`,
+    }),
+
+    ...(useMatchTheme(ThemeMode.Cyberpunk) && {
+      bg: "highlight",
+      boxShadow: "0 0 8px rgba(0, 255, 255, 0.8), 0 0 16px rgba(0, 255, 255, 0.4)",
     }),
   };
 
