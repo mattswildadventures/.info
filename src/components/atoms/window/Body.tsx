@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { ThemeUICSSObject } from "theme-ui";
 import useInBreakpoint from "../../../hooks/useInBreakpoint";
 import useMatchTheme from "../../../hooks/useMatchTheme";
+import useTaskbarHeight from "../../../hooks/useTaskbarHeight";
 import { ThemeMode } from "../../../themes";
 
 type WindowBodyProps = {
@@ -11,6 +12,7 @@ type WindowBodyProps = {
 
 export default function WindowBody({ children }: WindowBodyProps) {
   const isMobile = useInBreakpoint(1); // Use 768px breakpoint for consistency
+  const taskbarHeight = useTaskbarHeight();
   
   const bodyStyle: ThemeUICSSObject = {
     bg: "white",
@@ -18,7 +20,7 @@ export default function WindowBody({ children }: WindowBodyProps) {
     flex: 1,
     overflow: "auto",
 
-    // Mobile-specific scrolling enhancements
+    // Mobile-specific scrolling enhancements and dock spacing
     ...(isMobile && {
       // Ensure proper touch scrolling
       WebkitOverflowScrolling: "touch",
@@ -26,6 +28,11 @@ export default function WindowBody({ children }: WindowBodyProps) {
       overscrollBehavior: "contain",
       // Smooth scrolling for better UX
       scrollBehavior: "smooth",
+      // Add bottom padding to prevent content from going behind dock
+      paddingBottom: `${taskbarHeight + 16}px`,
+      // Ensure content doesn't exceed viewport
+      maxHeight: "calc(100vh - 120px)", // Conservative fallback
+      maxHeight: "calc(100dvh - 120px)", // Modern browsers
     }),
 
     ...(!useMatchTheme(ThemeMode.Flat) && { bg: "background" }),

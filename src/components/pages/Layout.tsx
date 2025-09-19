@@ -6,6 +6,7 @@ import { GlobalContext, BackgroundMode } from "../../contexts/GlobalContext";
 import { useUnsplashBackground } from "../../hooks/useUnsplashBackground";
 import useMatchTheme from "../../hooks/useMatchTheme";
 import useTaskbarHeight from "../../hooks/useTaskbarHeight";
+import useInBreakpoint from "../../hooks/useInBreakpoint";
 import { ThemeMode } from "../../themes";
 import Navigation from "../molecules/Navigation";
 import Desktop from "../organisms/Desktop";
@@ -20,6 +21,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
   const { imageUrl, attribution, loading, error, fetchRandomBackground, clearBackground } = useUnsplashBackground();
   const isLiquidGlassTheme = useMatchTheme(ThemeMode.LiquidGlass);
   const taskbarHeight = useTaskbarHeight();
+  const isMobile = useInBreakpoint(1);
 
   // Fetch random background when Random mode is selected
   useEffect(() => {
@@ -59,7 +61,10 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
 
   const containerStyle: ThemeUICSSObject = {
     position: "relative",
-    height: "100vh",
+    // Use proper mobile viewport units to avoid content going behind dock
+    height: isMobile ? "100dvh" : "100vh",
+    // Fallback for browsers that don't support dvh
+    minHeight: isMobile ? "100vh" : "-webkit-fill-available",
     overflow: "hidden",
     ...getBackgroundStyle(),
   };

@@ -25,6 +25,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
         <meta name="keywords" content={meta.keywords} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <link rel="icon" href="/favicon.ico" />
 
         {/* Open Graph / Facebook  */}

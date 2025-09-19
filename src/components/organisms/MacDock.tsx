@@ -178,6 +178,7 @@ export default function MacDock() {
     };
   }, [isMobile, screenWidth, showExtendedDockDesktop.val, showExtendedDockMobile.val]);
 
+
   const dockStyle: ThemeUICSSObject = {
     position: "fixed",
     bottom: "16px",

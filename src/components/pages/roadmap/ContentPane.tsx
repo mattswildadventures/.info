@@ -53,7 +53,6 @@ export default function ContentPane({ title }: ContentPaneProps) {
       sx={{
         flex: 1,
         p: 4,
-        overflow: "auto",
       }}
       key={selectedItem.title}
       initial={{ opacity: 0, y: 20 }}

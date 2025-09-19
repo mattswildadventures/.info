@@ -7,6 +7,28 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", sans-serif;
+  /* Fix mobile viewport height issues */
+  height: 100%;
+  /* Prevent horizontal scrolling on mobile */
+  overflow-x: hidden;
+}
+
+/* Mobile-specific viewport fixes */
+@media (max-width: 768px) {
+  html,
+  body {
+    /* Use dynamic viewport height on mobile to account for browser UI */
+    height: 100dvh;
+    /* Fallback for older browsers */
+    min-height: 100vh;
+    /* Prevent iOS Safari bottom bar overflow */
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Ensure body fills the available space */
+  body {
+    position: relative;
+  }
 }
 
 h1,
