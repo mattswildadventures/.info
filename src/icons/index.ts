@@ -42,6 +42,17 @@ import Logovscode from "./skill-vscode.svg";
 import Logovuejs from "./skill-vuejs.svg";
 import Logovuepress from "./skill-vuepress.png";
 import Logobulma from "./skill-bulma.svg";
+import Logomicrosoft from "./skill-microsoft.svg";
+import Logoclaude from "./skill-claude.svg";
+import Logoopenai from "./skill-openai.svg";
+import Logoapple from "./skill-apple.svg";
+import Logoneo4j from "./skill-neo4j.svg";
+import Logoreplit from "./skill-replit.png";
+import Logopinecone from "./skill-pinecone.png";
+import Logosupabase from "./skill-supabase.svg";
+import Logon8n from "./skill-n8n.png";
+import Logolaravel from "./skill-laravel.png";
+import Logomcp from "./skill-mcp.png";
 
 const Icon = {
   FlatAbout,
@@ -88,6 +99,17 @@ const Icon = {
   Logosvelte,
   Logovuepress,
   Logobulma,
+  Logomicrosoft,
+  Logoclaude,
+  Logoopenai,
+  Logoapple,
+  Logoneo4j,
+  Logoreplit,
+  Logopinecone,
+  Logosupabase,
+  Logon8n,
+  Logolaravel,
+  Logomcp,
 };
 
 export default Icon;

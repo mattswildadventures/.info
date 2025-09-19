@@ -55,7 +55,7 @@ const skills: Skill[] = [
     color: "#000",
     category: "Libraries/Frameworks",
   },
-  {
+  /*{
     name: "vuejs",
     label: "Vue",
     url: "https://vuejs.org/",
@@ -75,7 +75,7 @@ const skills: Skill[] = [
     url: "https://svelte.dev/",
     color: "#ff3e00",
     category: "Libraries/Frameworks",
-  },
+  },*/
   {
     name: "nodejs",
     label: "NodeJS",
@@ -90,7 +90,7 @@ const skills: Skill[] = [
     color: "#563d7c",
     category: "Libraries/Frameworks",
   },
-  {
+  /*{
     name: "sass",
     label: "Sass",
     url: "https://sass-lang.com/",
@@ -103,7 +103,7 @@ const skills: Skill[] = [
     url: "https://bulma.io/",
     color: "#00D1B2",
     category: "Libraries/Frameworks",
-  },
+  },*/
   {
     name: "gql",
     label: "GraphQL",
@@ -131,7 +131,7 @@ const skills: Skill[] = [
     color: "#eb3c00",
     category: "Tools",
   },
-  {
+  /*{
     name: "eclipse",
     label: "Eclipse",
     url: "https://www.eclipse.org/ide/",
@@ -151,7 +151,7 @@ const skills: Skill[] = [
     url: "https://balsamiq.com/wireframes/",
     color: "#666",
     category: "Tools",
-  },
+  },*/
   {
     name: "photoshop",
     label: "Photoshop",
@@ -166,13 +166,13 @@ const skills: Skill[] = [
     color: "#0052cc",
     category: "Tools",
   },
-  {
+  /*{
     name: "crowdin",
     label: "Crowdin",
     url: "https://crowdin.com/",
     color: "#333",
     category: "Tools",
-  },
+  },*/
   {
     name: "figma",
     label: "Figma",
@@ -180,12 +180,12 @@ const skills: Skill[] = [
     color: "#a259ff",
     category: "Tools",
   },
-  {
+  /*{
     name: "firebase",
     label: "Firebase",
     url: "https://firebase.google.com/",
     color: "#ffa714",
-  },
+  },*/
   {
     name: "framer",
     label: "Framer Motion",
@@ -212,11 +212,88 @@ const skills: Skill[] = [
     color: "#2684ff",
     category: "Tools",
   },
-  {
+  /*{
     name: "strapi",
     label: "Strapi",
     url: "https://strapi.io/",
     color: "#8e75ff",
+  },*/
+  {
+    name: "claude",
+    label: "Claude",
+    url: "https://claude.ai/",
+    color: "#E85A3B",
+    category: "Libraries/Frameworks"
+  },
+  {
+    name: "openai",
+    label: "OpenAI",
+    url: "https://openai.com/",
+    color: "#000000",
+    category: "Libraries/Frameworks"
+  },
+  {
+    name: "apple",
+    label: "Apple",
+    url: "https://apple.com/",
+    color: "#A3AAAE",
+    category: "Libraries/Frameworks"
+  },
+  {
+    name: "microsoft",
+    label: "Microsoft Server",
+    url: "https://www.microsoft.com/en-au/windows-server",
+    color: "#F25022",
+    category: "Infrastructure"
+  },
+  {
+    name: "n8n",
+    label: "n8n",
+    url: "https://n8n.com/",
+    color: "#EA4D30",
+    category: "Infrastructure"
+  },
+  {
+    name: "laravel",
+    label: "Laravel",
+    url: "https://www.laravel.com/",
+    color: "#FF2D20",
+    category: "Infrastructure"
+  },
+  {
+    name: "supabase",
+    label: "Supabase",
+    url: "https://supabase.com/",
+    color: "#3ECF8E",
+    category: "Infrastructure"
+  },
+  {
+    name: "pinecone",
+    label: "Pinecone",
+    url: "https://pinecone.io",
+    color: "#111827",
+    category: "Infrastructure"
+  },
+  {
+    name: "neo4j",
+    label: "Neo4J",
+    url: "http://neo4j.com",
+    color: "#018BFF",
+    category: "Infrastructure"
+  },
+  {
+    name: "replit",
+    label: "Replit",
+    url: "http://replit.com",
+    color: "#F26207",
+    category: "Infrastructure"
+  },
+  {
+    name: "mcp",
+    label: "Model Context Protocol",
+    url: "https://modelcontextprotocol.io",
+    color: "#000000",
+    category: "Infrastructure"
   },
 ];
 
