@@ -150,7 +150,7 @@ export default function MobileDropdownNav({
             left: 0,
             right: 0,
             zIndex: 1000,
-            backgroundColor: isDarkTheme ? "rgba(0, 29, 35, 0.95)" : "rgba(255, 255, 255, 0.95)",
+            backgroundColor: isDarkTheme ? "rgba(0, 29, 35, 0.95)" : "rgba(255, 255, 255, 0.95)", // white: rgba(255, 255, 255, 0.95) | purple: rgba(70, 0, 147, 0.95)
             backdropFilter: "blur(20px)",
             border: isDarkTheme ? "1px solid rgba(255, 255, 255, 0.2)" : "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: "12px",

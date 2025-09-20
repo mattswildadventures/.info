@@ -13,6 +13,8 @@ type WindowBodyProps = {
 export default function WindowBody({ children }: WindowBodyProps) {
   const isMobile = useInBreakpoint(1); // Use 768px breakpoint for consistency
   const taskbarHeight = useTaskbarHeight();
+  const isTronTheme = useMatchTheme(ThemeMode.Tron);
+  const isCyberpunkTheme = useMatchTheme(ThemeMode.Cyberpunk);
   
   const bodyStyle: ThemeUICSSObject = {
     bg: "white",
@@ -36,9 +38,15 @@ export default function WindowBody({ children }: WindowBodyProps) {
 
     ...(!useMatchTheme(ThemeMode.Flat) && { bg: "background" }),
 
-    ...(useMatchTheme(ThemeMode.Tron) && {
+    ...(isTronTheme && {
       background: (theme) =>
         `linear-gradient(135deg, ${theme.colors?.background} 10%, ${lighten("background", 0.1)(theme)})`,
+    }),
+
+    ...(isCyberpunkTheme && {
+      background: "rgba(13, 2, 8, 0.95)",
+      border: "1px solid rgba(0, 255, 255, 0.2)",
+      boxShadow: "inset 0 0 20px rgba(255, 0, 128, 0.1), inset 0 1px 0 rgba(0, 255, 255, 0.1)",
     }),
   };
 

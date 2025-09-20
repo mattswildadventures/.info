@@ -11,6 +11,8 @@ import { H2, P, SubTitle } from "../../atoms/Typography";
 export default function ContentPane({ title }: { title?: string }) {
   const alignment: ThemeUICSSObject = { textAlign: ["center", null, "unset"] };
   const listStyle: ThemeUICSSObject = { listStyle: "initial", ml: 5 };
+  const isTronTheme = useMatchTheme(ThemeMode.Tron);
+  const isCyberpunkTheme = useMatchTheme(ThemeMode.Cyberpunk);
 
   let content = (
     <MotionBox {...fade} sx={{ color: "muted", textAlign: "center" }}>
@@ -59,7 +61,7 @@ export default function ContentPane({ title }: { title?: string }) {
   return (
     <div
       sx={{
-        bg: useMatchTheme(ThemeMode.Tron) ? "transparent" : "background",
+        bg: (isTronTheme || isCyberpunkTheme) ? "transparent" : "background",
         px: 5,
         py: 4,
         flex: 1,

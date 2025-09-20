@@ -17,8 +17,10 @@ type ContentPaneProps = {
 
 export default function ContentPane({ articles, activePlatform }: ContentPaneProps) {
   const articleList = articles[activePlatform];
+  const isTronTheme = useMatchTheme(ThemeMode.Tron);
+  const isCyberpunkTheme = useMatchTheme(ThemeMode.Cyberpunk);
   return (
-    <div sx={{ bg: useMatchTheme(ThemeMode.Tron) ? "transparent" : "background", p: 4, flex: 1 }}>
+    <div sx={{ bg: (isTronTheme || isCyberpunkTheme) ? "transparent" : "background", p: 4, flex: 1 }}>
       <AnimatePresence exitBeforeEnter>
         {articleList.map((article, i) => (
           <motion.div key={article.id} {...fade} transition={{ staggerChildren: 1 }}>

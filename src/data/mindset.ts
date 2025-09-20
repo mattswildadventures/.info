@@ -70,7 +70,7 @@ const mindset: Record<string, MindsetItem[]> = {
       timeline: "2019 - Present",
       description: "Breaking down complex problems into fundamental truths and building up from there",
       remark:
-        "This mental model helps me avoid assumptions and conventional wisdom that might be outdated or incorrect. By starting from first principles, I can develop more innovative solutions and clearer understanding.",
+        "Discovering First Principles and understanding the pattern of thought made me realise at times I was thinking similar to this however not anywhere need the capability of First Principles. Upon realising that First Principles is one of the most powerful ways to think I spend every chance I get to practice and apply.",
       principles: [
         "Question assumptions and identify what we truly know to be true",
         "Break complex problems down to their fundamental elements",

@@ -18,7 +18,7 @@ const work: Record<string, Job[]> = {
       activities: [
         "Planned each lesson each week",
         "Identified kids with strong capabilities to offer private coaching",
-        "Continually attended training workshops. Had workshops with Rafael Nadals old coach, Jofre Porta.",
+        "Continually attended training workshops. Even had workshops with Rafael Nadals old coach, Jofre Porta.",
         "Build team numbers back up to full strength for the Wednesday Night Superleague comp. From 5 teams back up to 12 for over 2 seasons."
       ]
     },

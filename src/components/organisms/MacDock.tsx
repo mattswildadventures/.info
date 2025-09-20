@@ -48,6 +48,7 @@ export default function MacDock() {
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
   const isClassicTheme = useMatchTheme(ThemeMode.Classic);
   const isTronTheme = useMatchTheme(ThemeMode.Tron);
+  const isCyberpunkTheme = useMatchTheme(ThemeMode.Cyberpunk);
 
   useClickAway(panelRef, (event) => {
     const isDockClick = dockRef.current?.contains(event.target as Node);
@@ -230,6 +231,13 @@ export default function MacDock() {
       background: "rgba(40, 142, 159, 0.15)",
       border: "1px solid rgba(40, 142, 159, 0.3)",
       boxShadow: "0 8px 32px rgba(40, 142, 159, 0.4)",
+    }),
+
+    ...(isCyberpunkTheme && {
+      background: "rgba(26, 0, 51, 0.8)",
+      border: "1px solid var(--theme-ui-colors-highlight)",
+      boxShadow: "0 0 20px rgba(255, 0, 128, 0.6), 0 0 40px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(255, 0, 128, 0.1)",
+      backdropFilter: "blur(20px) saturate(1.2)",
     }),
 
     // Mobile taskbar styling - full width, no rounded corners
