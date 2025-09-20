@@ -36,8 +36,8 @@ export function getDefaultBackground(): BackgroundMode {
     case 'random':
       return BackgroundMode.Random;
     default:
-      // Fallback to None if invalid or missing
-      return BackgroundMode.None;
+      // Fallback to Custom (My background) if invalid or missing
+      return BackgroundMode.Custom;
   }
 }
 
@@ -97,8 +97,8 @@ export function getDefaultShowExtendedDockDesktop(): boolean {
     return false;
   }
   
-  // Fallback to false if invalid or missing (extended dock hidden by default on desktop)
-  return false;
+  // Fallback to true if invalid or missing (extended dock shown by default on desktop)
+  return true;
 }
 
 export function getDefaultShowExtendedDockMobile(): boolean {

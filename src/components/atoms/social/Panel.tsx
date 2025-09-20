@@ -6,10 +6,11 @@ import { List, MotionList } from "../Container";
 import SocialLink, { SocialLinkType } from "./Link";
 
 const links: SocialLinkType[] = [
-  { text: "Github", icon: "SiGithub", href: "https://github.com/khang-nd" },
-  { text: "LinkedIn", icon: "FaLinkedinIn", href: "https://www.linkedin.com/in/khangnd" },
-  { text: "Twitter", icon: "SiTwitter", href: "https://twitter.com/_khangnd" },
-  { text: "Fandom", icon: "SiFandom", href: "https://dev.fandom.com/wiki/User:KhangND" },
+  // { text: "Github", icon: "SiGithub", href: "https://github.com/khang-nd" },
+  { text: "LinkedIn", icon: "FaLinkedinIn", href: "https://www.linkedin.com/in/matthew-day-a6230056/" },
+  { text: "X", icon: "SiTwitter", href: "https://x.com/mattstechadventures" },
+  { text: "Instagram", icon: "FaInstagram", href: "http://instagram.com/mattstechadventures" },
+  // { text: "Fandom", icon: "SiFandom", href: "https://dev.fandom.com/wiki/User:KhangND" },
 ];
 
 const SocialPanelWithRef = ({}, ref: ForwardedRef<HTMLUListElement>) => {
@@ -22,7 +23,6 @@ const SocialPanelWithRef = ({}, ref: ForwardedRef<HTMLUListElement>) => {
   const setIconPos = (index: number) =>
     [
       { top: containerHalf - iconHalf, left: 0 },
-      { top: "52px", left: "15px" },
       { top: "15px", left: "52px" },
       { top: 0, left: containerHalf - iconHalf },
     ][index];

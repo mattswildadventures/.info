@@ -485,42 +485,51 @@ export default function MacDock() {
 
   // Desktop social media icons
   const desktopSocialIcons = [
-    {
-      iconName: undefined,
-      customIcon: <ReactIcon iconName="SiGithub" size={28} />,
-      label: "GitHub",
-      onClick: undefined,
-      href: "https://github.com/khang-nd",
-      isActive: false,
-      isNavigationIcon: false,
-    },
+    // {
+    //   iconName: undefined,
+    //   customIcon: <ReactIcon iconName="SiGithub" size={28} />,
+    //   label: "GitHub",
+    //   onClick: undefined,
+    //   href: "https://github.com/khang-nd",
+    //   isActive: false,
+    //   isNavigationIcon: false,
+    // },
     {
       iconName: undefined,
       customIcon: <ReactIcon iconName="FaLinkedinIn" size={28} />,
       label: "LinkedIn", 
       onClick: undefined,
-      href: "https://www.linkedin.com/in/khangnd",
+      href: "https://www.linkedin.com/in/matthew-day-a6230056/",
       isActive: false,
       isNavigationIcon: false,
     },
     {
       iconName: undefined,
       customIcon: <ReactIcon iconName="SiTwitter" size={28} />,
-      label: "Twitter",
+      label: "X",
       onClick: undefined,
-      href: "https://twitter.com/_khangnd", 
+      href: "https://x.com/mattstechadventures", 
       isActive: false,
       isNavigationIcon: false,
     },
     {
       iconName: undefined,
-      customIcon: <ReactIcon iconName="SiFandom" size={28} />,
-      label: "Fandom",
+      customIcon: <ReactIcon iconName="FaInstagram" size={28} />,
+      label: "Instagram",
       onClick: undefined,
-      href: "https://dev.fandom.com/wiki/User:KhangND",
+      href: "http://instagram.com/mattstechadventures",
       isActive: false,
       isNavigationIcon: false,
     },
+    // {
+    //   iconName: undefined,
+    //   customIcon: <ReactIcon iconName="SiFandom" size={28} />,
+    //   label: "Fandom",
+    //   onClick: undefined,
+    //   href: "https://dev.fandom.com/wiki/User:KhangND",
+    //   isActive: false,
+    //   isNavigationIcon: false,
+    // },
   ];
 
   // Dock icons configuration (responsive)
