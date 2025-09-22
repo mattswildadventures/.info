@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { useContext, useRef, useState, useMemo } from "react";
+import { useContext, useRef, useState, useMemo, useCallback } from "react";
 import { useClickAway, useKey } from "react-use";
 import { ThemeUICSSObject } from "theme-ui";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import useInBreakpoint from "../../hooks/useInBreakpoint";
 import useMatchTheme from "../../hooks/useMatchTheme";
+import useTaskbarHeight from "../../hooks/useTaskbarHeight";
 import useDimensions from "../../hooks/useDimentions";
 import { getRoute } from "../../misc/routes";
 import { ThemeMode } from "../../themes";
@@ -75,9 +76,9 @@ export default function MacDock() {
   };
 
   // Get the appropriate extended dock setting based on current platform
-  const getShowExtendedDock = (): boolean => {
+  const getShowExtendedDock = useCallback((): boolean => {
     return isMobile ? showExtendedDockMobile.val : showExtendedDockDesktop.val;
-  };
+  }, [isMobile, showExtendedDockMobile.val, showExtendedDockDesktop.val]);
 
   // Calculate dock justification based on spacing configuration
   const getDockJustification = (): string => {
@@ -104,10 +105,13 @@ export default function MacDock() {
     }
   };
 
+  // Import centralized taskbar height hook
+  const taskbarHeight = useTaskbarHeight();
+
   // Dynamic sizing calculation for mobile taskbar - moved here before style objects
-  const { iconSize, taskbarHeight, gapSize, needsScrolling } = useMemo(() => {
+  const { iconSize, gapSize, needsScrolling } = useMemo(() => {
     if (!isMobile) {
-      return { iconSize: 48, taskbarHeight: 80, gapSize: 4, needsScrolling: false };
+      return { iconSize: 48, gapSize: 4, needsScrolling: false };
     }
 
     // Count total icons that will be rendered
@@ -163,21 +167,16 @@ export default function MacDock() {
       }
     }
     
-    // Calculate taskbar height based on icon size
-    const padding = 16; // 8px top + 8px bottom
-    const calculatedHeight = optimalIconSize + padding;
-    
     // Check if we need horizontal scrolling
     const totalRequiredWidth = (totalIcons * optimalIconSize) + ((totalIcons - 1) * optimalGap);
     const needsScrolling = totalRequiredWidth > availableWidth;
     
     return {
       iconSize: optimalIconSize,
-      taskbarHeight: calculatedHeight,
       gapSize: optimalGap,
       needsScrolling
     };
-  }, [isMobile, screenWidth, showExtendedDockDesktop.val, showExtendedDockMobile.val]);
+  }, [isMobile, screenWidth, getShowExtendedDock]);
 
 
   const dockStyle: ThemeUICSSObject = {

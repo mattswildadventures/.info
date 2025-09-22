@@ -32,8 +32,8 @@ export default function WindowBody({ children }: WindowBodyProps) {
       scrollBehavior: "smooth",
       // Add bottom padding to prevent content from going behind dock
       paddingBottom: `${taskbarHeight + 16}px`,
-      // Ensure content doesn't exceed viewport
-      maxHeight: "calc(100dvh - 120px)", // Modern browsers with fallback
+      // Ensure content doesn't exceed viewport - use dynamic taskbar height
+      maxHeight: `calc(100dvh - ${taskbarHeight + 40}px)`, // Dynamic calculation with buffer
     }),
 
     ...(!useMatchTheme(ThemeMode.Flat) && { bg: "background" }),
