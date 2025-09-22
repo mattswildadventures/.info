@@ -190,7 +190,7 @@ export function getDefaultDockGapSize(): number {
  * Controls whether social buttons appear as individual icons or a single popup button.
  */
 
-export function getDefaultSocialDisplayMode(): 'popup' | 'individual' {
+export function getDefaultSocialDisplayMode(isExtendedDockEnabled?: boolean): 'popup' | 'individual' {
   const envValue = process.env.NEXT_PUBLIC_SOCIAL_DISPLAY_MODE?.toLowerCase();
   
   if (envValue === 'individual') {
@@ -200,7 +200,14 @@ export function getDefaultSocialDisplayMode(): 'popup' | 'individual' {
     return 'popup';
   }
   
-  // Fallback to popup mode (single social button with popup)
+  // Smart fallback based on extended dock state:
+  // - When extended dock is disabled: show individual icons (more space for fewer icons)
+  // - When extended dock is enabled: show popup (conserve space with many icons)
+  if (isExtendedDockEnabled !== undefined) {
+    return isExtendedDockEnabled ? 'popup' : 'individual';
+  }
+  
+  // Default fallback when dock state is unknown
   return 'popup';
 }
 

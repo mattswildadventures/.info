@@ -46,10 +46,6 @@ export default function MacDock() {
   const dockSpacingExtended = getDefaultDockSpacingExtended();
   const dockSpacingCompact = getDefaultDockSpacingCompact();
   const dockGapSize = getDefaultDockGapSize();
-  
-  // Social display configuration from environment
-  const socialDisplayMode = getDefaultSocialDisplayMode();
-  const showSeparator = getDefaultShowSeparator();
 
   // Move hook calls outside conditional usage
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
@@ -85,6 +81,10 @@ export default function MacDock() {
   const getShowExtendedDock = useCallback((): boolean => {
     return isMobile ? showExtendedDockMobile.val : showExtendedDockDesktop.val;
   }, [isMobile, showExtendedDockMobile.val, showExtendedDockDesktop.val]);
+
+  // Social display configuration from environment (pass extended dock state for smart fallback)
+  const socialDisplayMode = getDefaultSocialDisplayMode(getShowExtendedDock());
+  const showSeparator = getDefaultShowSeparator();
 
   // Calculate dock justification based on spacing configuration
   const getDockJustification = (): string => {
