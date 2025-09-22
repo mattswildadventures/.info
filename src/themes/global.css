@@ -6,7 +6,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Adelle Sans", "Segoe UI", sans-serif;
   /* Fix mobile viewport height issues */
   height: 100%;
   /* Prevent horizontal scrolling on mobile */

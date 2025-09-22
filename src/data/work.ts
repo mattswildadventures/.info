@@ -85,7 +85,7 @@ const work: Record<string, Job[]> = {
       timeline: "Sept 2012 - July 2023",
       description: "A Technology Solution Partner company",
       remark:
-        "Building on-top of our 14 years in the Tech Industry and previous experiencing running YesIT as a Managed Service Provider, we've built out a new approach working with businesses regarding their technology. Instead of being positioned purely as an \“outsourced helpdesk\” focused on keeping systems online, Minnio is designed to work more closely with organisations as a strategic partner. Helping align technology with business goals, streamline operations and build solutions that scale with their growth.",
+        "Building on-top of our 14 years in the Tech Industry and previous experiencing running YesIT as a Managed Service Provider, we've built out a new approach working with businesses regarding their technology. Minnio is designed to work closely with organisations as a strategic partner, moving beyond our previous role as an “outsourced helpdesk” that was primarily focused on keeping systems online. Helping align technology with business goals, streamline operations and build solutions that scale with their growth.",
       activities: [
         "Consulting",
         "Technology Integration",
