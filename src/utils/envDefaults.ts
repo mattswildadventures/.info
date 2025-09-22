@@ -185,6 +185,41 @@ export function getDefaultDockGapSize(): number {
 }
 
 /**
+ * Social Button Display Configuration
+ * 
+ * Controls whether social buttons appear as individual icons or a single popup button.
+ */
+
+export function getDefaultSocialDisplayMode(): 'popup' | 'individual' {
+  const envValue = process.env.NEXT_PUBLIC_SOCIAL_DISPLAY_MODE?.toLowerCase();
+  
+  if (envValue === 'individual') {
+    return 'individual';
+  }
+  if (envValue === 'popup') {
+    return 'popup';
+  }
+  
+  // Fallback to popup mode (single social button with popup)
+  return 'popup';
+}
+
+export function getDefaultShowSeparator(): boolean {
+  const envValue = process.env.NEXT_PUBLIC_SHOW_SEPARATOR?.toLowerCase();
+  
+  // Parse boolean values
+  if (envValue === 'true' || envValue === '1') {
+    return true;
+  }
+  if (envValue === 'false' || envValue === '0') {
+    return false;
+  }
+  
+  // Fallback to true (show separator by default when conditions are met)
+  return true;
+}
+
+/**
  * Get all default settings as an object for easy access
  */
 export function getAllDefaults() {
@@ -200,5 +235,7 @@ export function getAllDefaults() {
     dockSpacingExtended: getDefaultDockSpacingExtended(),
     dockSpacingCompact: getDefaultDockSpacingCompact(),
     dockGapSize: getDefaultDockGapSize(),
+    socialDisplayMode: getDefaultSocialDisplayMode(),
+    showSeparator: getDefaultShowSeparator(),
   };
 }

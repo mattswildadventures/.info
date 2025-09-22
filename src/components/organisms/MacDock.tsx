@@ -15,7 +15,9 @@ import {
   getDefaultDockSpacingMode, 
   getDefaultDockSpacingExtended, 
   getDefaultDockSpacingCompact,
-  getDefaultDockGapSize 
+  getDefaultDockGapSize,
+  getDefaultSocialDisplayMode,
+  getDefaultShowSeparator
 } from "../../utils/envDefaults";
 import DockIcon from "../atoms/dock/DockIcon";
 import ReactIcon from "../atoms/IconReact";
@@ -44,6 +46,10 @@ export default function MacDock() {
   const dockSpacingExtended = getDefaultDockSpacingExtended();
   const dockSpacingCompact = getDefaultDockSpacingCompact();
   const dockGapSize = getDefaultDockGapSize();
+  
+  // Social display configuration from environment
+  const socialDisplayMode = getDefaultSocialDisplayMode();
+  const showSeparator = getDefaultShowSeparator();
 
   // Move hook calls outside conditional usage
   const isSoftTheme = useMatchTheme(ThemeMode.Soft);
@@ -117,7 +123,17 @@ export default function MacDock() {
     // Count total icons that will be rendered
     const coreNavigationCount = 1; // Home icon
     const extendedNavigationCount = getShowExtendedDock() ? 6 : 0; // Extended navigation icons based on platform
-    const socialCount = 1; // Share icon on mobile
+    
+    // Calculate social icons count based on display mode and separator visibility
+    let socialCount = 0;
+    if (socialDisplayMode === 'popup') {
+      socialCount = 1; // Just the share button
+    } else {
+      // Individual mode: 3 social icons + optional separator
+      const shouldShowSeparator = getShowExtendedDock() && showSeparator;
+      socialCount = shouldShowSeparator ? 4 : 3; // 3 icons + separator if conditions met
+    }
+    
     const settingsCount = 1;
     const totalIcons = coreNavigationCount + extendedNavigationCount + socialCount + settingsCount;
 
@@ -546,12 +562,13 @@ export default function MacDock() {
     // },
   ];
 
-  // Dock icons configuration (responsive)
+  // Dock icons configuration (env-controlled social display)
   const dockIcons = [
     ...navigationIcons,
     
-    // Mobile: Just the share icon (no separator)
-    ...(isMobile ? [
+    // Social icons based on environment configuration
+    ...(socialDisplayMode === 'popup' ? [
+      // Popup mode: Single share icon with popup
       {
         iconName: undefined,
         customIcon: <ShareIcon />,
@@ -562,8 +579,8 @@ export default function MacDock() {
         isNavigationIcon: false,
       }
     ] : [
-      // Desktop: Separator + individual social icons
-      {
+      // Individual mode: Conditional separator + individual social icons
+      ...(getShowExtendedDock() && showSeparator ? [{
         iconName: undefined,
         customIcon: <div sx={{ width: "2px", height: "32px", background: "rgba(255,255,255,0.3)", borderRadius: "1px" }} />,
         label: "Separator",
@@ -571,7 +588,7 @@ export default function MacDock() {
         href: undefined,
         isActive: false,
         isNavigationIcon: false,
-      },
+      }] : []),
       ...desktopSocialIcons
     ]),
     
