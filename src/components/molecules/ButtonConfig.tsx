@@ -1,7 +1,10 @@
 import { Variants } from "framer-motion";
 import { ForwardedRef, forwardRef, MouseEventHandler } from "react";
+import { ThemeUICSSObject } from "theme-ui";
 import useInBreakpoint from "../../hooks/useInBreakpoint";
 import useIsLandscape from "../../hooks/useIsLandscape";
+import useMatchTheme from "../../hooks/useMatchTheme";
+import { ThemeMode } from "../../themes";
 import { MotionButton } from "../atoms/Button";
 import Icon from "../atoms/Icon";
 
@@ -21,11 +24,20 @@ const ButtonConfig = ({ isActive, onClick }: ButtonConfigProps, ref: ForwardedRe
     active: { rotateZ: 180 },
   };
 
+  const buttonStyle: ThemeUICSSObject = {
+    size,
+    ...(useMatchTheme(ThemeMode.Cyberpunk) && {
+      "&:hover": {
+        boxShadow: "0 0 15px rgba(0, 255, 255, 0.6), 0 0 30px rgba(255, 0, 128, 0.4)",
+      },
+    }),
+  };
+
   return (
     <MotionButton
       ref={ref}
       unsetStyle
-      sx={{ size }}
+      sx={buttonStyle}
       focusStyle={{ borderRadius: "50%" }}
       variants={variants}
       animate={isActive ? "active" : "default"}

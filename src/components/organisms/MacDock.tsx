@@ -234,7 +234,8 @@ export default function MacDock() {
 
     ...(isCyberpunkTheme && {
       background: "rgba(26, 0, 51, 0.8)",
-      border: "1px solid var(--theme-ui-colors-highlight)",
+      border: "1px solid",
+      borderColor: "highlight",
       boxShadow: "0 0 20px rgba(255, 0, 128, 0.6), 0 0 40px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(255, 0, 128, 0.1)",
       backdropFilter: "blur(20px) saturate(1.2)",
     }),
@@ -246,9 +247,16 @@ export default function MacDock() {
       borderRadius: "0",
       gap: `${gapSize}px`,
       justifyContent: needsScrolling ? "flex-start" : getDockJustification(), // Use configured spacing
-      border: "none",
-      borderTop: "1px solid rgba(255, 255, 255, 0.2)",
-      boxShadow: "0 -4px 20px rgba(0, 0, 0, 0.3)",
+      border: isCyberpunkTheme ? "1px solid" : "none",
+      borderColor: isCyberpunkTheme ? "highlight" : undefined,
+      borderTop: isCyberpunkTheme ? "1px solid" : "1px solid rgba(255, 255, 255, 0.2)",
+      borderTopColor: isCyberpunkTheme ? "highlight" : undefined,
+      boxShadow: isCyberpunkTheme 
+        ? "0 0 20px rgba(255, 0, 128, 0.6), 0 0 40px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(255, 0, 128, 0.1)"
+        : "0 -4px 20px rgba(0, 0, 0, 0.3)",
+      ...(isCyberpunkTheme && {
+        background: "rgba(26, 0, 51, 0.9)",
+      }),
       minHeight: `${taskbarHeight}px`,
       height: `${taskbarHeight}px`,
       // Add horizontal scrolling when needed
@@ -381,6 +389,13 @@ export default function MacDock() {
                 background: "rgba(40, 142, 159, 0.15)",
                 border: "1px solid rgba(40, 142, 159, 0.3)",
                 boxShadow: "0 8px 32px rgba(40, 142, 159, 0.4)",
+              }),
+
+              ...(isCyberpunkTheme && {
+                background: "rgba(26, 0, 51, 0.8)",
+                border: "1px solid",
+                borderColor: "highlight",
+                boxShadow: "0 0 20px rgba(255, 0, 128, 0.6), 0 0 40px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(255, 0, 128, 0.1)",
               }),
             }}
           >

@@ -38,6 +38,7 @@ export default function DockIcon({
 }: DockIconProps) {
   const isMobile = useInBreakpoint(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const isCyberpunkTheme = useMatchTheme(ThemeMode.Cyberpunk);
   
   const baseSize = customSize || (isMobile ? 40 : 48);
   const currentSize = baseSize * scale;
@@ -92,6 +93,26 @@ export default function DockIcon({
         transform: "scale(0.9)",
       },
     },
+
+    // Cyberpunk theme styling
+    ...(isCyberpunkTheme && {
+      background: "rgba(51, 0, 102, 0.8)",
+      border: "1px solid",
+      borderColor: "highlight",
+      boxShadow: "0 0 15px rgba(255, 0, 128, 0.5), 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(255, 0, 128, 0.1)",
+      color: "highlight",
+      
+      "&:hover": {
+        background: "rgba(51, 0, 102, 0.9)",
+        boxShadow: "0 0 20px rgba(255, 0, 128, 0.7), 0 0 40px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(255, 0, 128, 0.2)",
+        transform: isMobile ? "scale(1.05)" : "translateY(-2px)",
+      },
+      
+      "&:active": {
+        background: "rgba(51, 0, 102, 0.7)",
+        transform: "translateY(0px) scale(0.95)",
+      },
+    }),
   };
 
   const dotIndicatorStyle: ThemeUICSSObject = {
@@ -118,6 +139,11 @@ export default function DockIcon({
     ...(useMatchTheme(ThemeMode.Tron) && {
       bg: "red",
       boxShadow: (theme) => `0 0 0 1px ${theme.colors?.shadow}`,
+    }),
+
+    ...(isCyberpunkTheme && {
+      bg: "highlight",
+      boxShadow: "0 0 8px rgba(0, 255, 255, 0.8), 0 0 16px rgba(0, 255, 255, 0.4)",
     }),
   };
 

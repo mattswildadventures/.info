@@ -54,6 +54,14 @@ export default function Taskbar() {
     ...(useMatchTheme(ThemeMode.Tron) && {
       boxShadow: (theme) => `inset 0 2px ${theme.colors?.shadow}`,
     }),
+
+    ...(useMatchTheme(ThemeMode.Cyberpunk) && {
+      bg: "primary",
+      backdropFilter: "blur(10px)",
+      border: "1px solid",
+      borderColor: "highlight",
+      boxShadow: "0 -2px 20px rgba(255, 0, 128, 0.3), 0 -4px 40px rgba(0, 255, 255, 0.2), inset 0 1px 0 rgba(0, 255, 255, 0.3)",
+    }),
   };
 
   const configStyle: ThemeUICSSObject = {
@@ -74,6 +82,13 @@ export default function Taskbar() {
 
     ...(useMatchTheme(ThemeMode.Tron) && {
       boxShadow: (theme) => `inset 0 0 0 2px ${theme.colors?.shadow}`,
+    }),
+
+    ...(useMatchTheme(ThemeMode.Cyberpunk) && {
+      bg: "primary",
+      border: "1px solid",
+      borderColor: "highlight",
+      boxShadow: "0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(255, 0, 128, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.2)",
     }),
   };
 

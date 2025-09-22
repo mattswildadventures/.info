@@ -29,6 +29,7 @@ export default function TaskbarItem({ data }: TaskbarItemProps): JSX.Element {
     ...(useMatchTheme(ThemeMode.Soft) && { height: "85%" }),
     ...(useMatchTheme(ThemeMode.Classic) && { height: "80%" }),
     ...(useMatchTheme(ThemeMode.Tron) && { height: "75%" }),
+    ...(useMatchTheme(ThemeMode.Cyberpunk) && { height: "80%" }),
   };
 
   const itemStyle: ThemeUICSSObject = {
@@ -57,6 +58,17 @@ export default function TaskbarItem({ data }: TaskbarItemProps): JSX.Element {
     ...(useMatchTheme(ThemeMode.Tron) && {
       bg: "green",
       boxShadow: (theme) => `inset 0 0 0 1.5px ${theme.colors?.shadow}`,
+    }),
+
+    ...(useMatchTheme(ThemeMode.Cyberpunk) && {
+      bg: "secondary",
+      borderRadius: 8,
+      border: "1px solid",
+      borderColor: "highlight",
+      borderBottom: "2px solid",
+      borderBottomColor: "highlight",
+      boxShadow: "0 0 10px rgba(0, 255, 255, 0.4), 0 0 20px rgba(255, 0, 128, 0.2), inset 0 0 10px rgba(0, 255, 255, 0.1)",
+      color: "highlight",
     }),
   };
 
