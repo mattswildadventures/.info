@@ -23,7 +23,7 @@ export default function LeftPanel() {
         <StyledButton
           sx={buttonStyle}
           iconName="AiOutlineMail"
-          href="mailto:khang.nguyenduyvn@gmail.com?subject=Hey Khang!"
+          href="mailto:matt@minnio.com.au?subject=Hey Matt!"
         >
           Email
         </StyledButton>
